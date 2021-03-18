@@ -22,6 +22,11 @@ class DetailActivity : AppCompatActivity() {
         binding.imgAvatar.setImageResource(user.avatar)
         binding.tvName.text = user.name
         binding.tvUsername.text = user.username
+        binding.tvloc.text = "Live at ${user.location}"
+        binding.tvrepo.text = "Repositories: ${user.repository}"
+        binding.tvcompany.text = "Work at ${user.company}"
+        binding.tvfollower.text = "Followed by ${user.followers} users"
+        binding.tvfollowing.text = "Following ${user.following} users"
 
         setContentView(binding.root)
     }
