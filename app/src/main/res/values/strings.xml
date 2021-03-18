@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Github User</string>
     <string name="logo">Logo</string>
+    <string name="titlePersonal">Personal Information</string>
+    <string name="titleStat">Github Stat</string>
 
     <string-array name="username">
         <item>JakeWharton</item>
