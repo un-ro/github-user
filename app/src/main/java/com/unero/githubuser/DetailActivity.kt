@@ -2,9 +2,9 @@ package com.unero.githubuser
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.unero.githubuser.data.User
 import com.unero.githubuser.databinding.ActivityDetailBinding
 
@@ -25,9 +25,9 @@ class DetailActivity : AppCompatActivity() {
         binding.imgAvatar.setImageResource(user.avatar)
         binding.tvName.text = user.name
         binding.tvUsername.text = user.username
-        binding.tvloc.text = "${user.location}"
+        binding.tvloc.text = user.location
         binding.tvrepo.text = "${user.repository} Repositories"
-        binding.tvcompany.text = "${user.company}"
+        binding.tvcompany.text = user.company
         binding.tvfollower.text = "Followed by ${user.followers} users"
         binding.tvfollowing.text = "Following ${user.following} users"
 
@@ -47,7 +47,7 @@ class DetailActivity : AppCompatActivity() {
             followers and following ${user.following} users.
         """.trimIndent()
         binding.btnShare.setOnClickListener {
-            val intent = Intent().apply{
+            val intent = Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_TEXT, pharagraph)
                 type = "text/plain"
