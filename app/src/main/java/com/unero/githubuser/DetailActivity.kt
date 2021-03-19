@@ -1,8 +1,10 @@
 package com.unero.githubuser
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
+import android.view.View
 import com.unero.githubuser.data.User
 import com.unero.githubuser.databinding.ActivityDetailBinding
 
@@ -30,11 +32,39 @@ class DetailActivity : AppCompatActivity() {
         binding.tvfollowing.text = "Following ${user.following} users"
 
         // Add icon to TextView
-        binding.tvloc.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_place_24, 0, 0, 0)
-        binding.tvcompany.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_work_24, 0, 0, 0)
-        binding.tvfollower.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_people_alt_24, 0, 0, 0)
-        binding.tvfollowing.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_people_alt_24, 0, 0, 0)
-        binding.tvrepo.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_folder_24, 0, 0, 0)
+        binding.tvloc.setCompoundDrawablesWithIntrinsicBounds(R.drawable.map_icon, 0, 0, 0)
+        binding.tvcompany.setCompoundDrawablesWithIntrinsicBounds(R.drawable.work_icon, 0, 0, 0)
+        binding.tvfollower.setCompoundDrawablesWithIntrinsicBounds(R.drawable.people_icon, 0, 0, 0)
+        binding.tvfollowing.setCompoundDrawablesWithIntrinsicBounds(R.drawable.people_icon, 0, 0, 0)
+        binding.tvrepo.setCompoundDrawablesWithIntrinsicBounds(R.drawable.repo_icon, 0, 0, 0)
+
+        // Add Icon to Button
+        binding.btnShare.setCompoundDrawablesWithIntrinsicBounds(R.drawable.share_icon, 0, 0, 0)
+
+        // Share Text Implicit Intent
+        val pharagraph = """
+            Hey, do you know if ${user.name} or ${user.username} on github is have ${user.followers} 
+            followers and following ${user.following} users.
+        """.trimIndent()
+        binding.btnShare.setOnClickListener {
+            val intent = Intent().apply{
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, pharagraph)
+                type = "text/plain"
+            }
+
+            val shareIntent = Intent.createChooser(intent, null)
+            startActivity(shareIntent)
+        }
+
+        if (user.name == "Unero")
+            binding.easter.visibility = View.VISIBLE
+
+        binding.easter.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = (Uri.parse("https://github.com/un-ro"))
+            startActivity(intent)
+        }
 
         setContentView(binding.root)
 

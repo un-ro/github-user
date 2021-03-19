@@ -34,7 +34,7 @@
             android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="lorem ipsum"
+            android:fontFamily="@font/aldrich"
             android:textSize="15sp"
             android:textStyle="bold"
             card_view:layout_constraintStart_toEndOf="@id/imgAvatar"
@@ -45,12 +45,30 @@
             android:id="@+id/tvUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="lorem ipsum"
+            android:fontFamily="@font/anonymous_pro"
             android:textSize="13sp"
             card_view:layout_constraintTop_toBottomOf="@id/gl"
             card_view:layout_constraintStart_toEndOf="@id/imgAvatar"
             android:layout_marginStart="10dp" />
 
+        <Button
+            android:id="@+id/btnLike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btnlove"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintBottom_toTopOf="@id/gl"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/btnDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btndetail"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@id/gl"
+            android:layout_marginEnd="8dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
     
 </androidx.cardview.widget.CardView>
