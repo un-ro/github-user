@@ -1,4 +1,4 @@
-package com.unero.githubuser.data
+package com.unero.githubuser.data.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

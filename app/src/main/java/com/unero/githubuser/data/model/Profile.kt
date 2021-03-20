@@ -1,11 +1,10 @@
-package com.unero.githubuser.data
+package com.unero.githubuser.data.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 // Data for https://api.github.com/users/{username}
 
-@Parcelize
 data class Profile(
     val username: String,
     val name: String,
@@ -14,4 +13,4 @@ data class Profile(
     val location: String,
     val joinDate: String,
     val repository: Int
-): Parcelable
+)
