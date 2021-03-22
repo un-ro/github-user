@@ -3,6 +3,8 @@ package com.unero.githubuser.ui.fragment
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.provider.Settings
 import android.view.*
@@ -18,11 +20,12 @@ import com.unero.githubuser.ui.viewmodel.SearchViewModel
 import com.unero.githubuser.databinding.FragmentSearchBinding
 import es.dmoral.toasty.Toasty
 
-class Search : Fragment(), SearchView.OnCloseListener {
+class Search : Fragment(){
 
     private lateinit var binding: FragmentSearchBinding
     private lateinit var mViewModel: SearchViewModel
     private lateinit var adapter: SearchAdapter
+    private var isConnected: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +53,10 @@ class Search : Fragment(), SearchView.OnCloseListener {
         binding.rv.adapter = adapter
         showLoading(false)
 
+        val cm = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val actvieNetwork: NetworkInfo? = cm.activeNetworkInfo
+        isConnected = actvieNetwork?.isConnectedOrConnecting == true
+
         // Custom Toasty
         Toasty.custom(requireContext(), R.string.instruction, R.drawable.people_icon, R.color.toast ,Toasty.LENGTH_LONG, true, true).show()
     }
@@ -69,6 +76,10 @@ class Search : Fragment(), SearchView.OnCloseListener {
         })
     }
 
+    private fun networkRemind(isIt: Boolean) {
+
+    }
+
     // Menu
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater){
         super.onCreateOptionsMenu(menu, inflater)
@@ -82,10 +93,16 @@ class Search : Fragment(), SearchView.OnCloseListener {
         searchView.queryHint = resources.getString(R.string.search_hint)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                mViewModel.search(query)
-                render()
-                showLoading(false)
-                return true
+                if (isConnected){
+                    mViewModel.search(query)
+                    render()
+                    showLoading(false)
+                    return true
+                } else {
+                    Toast.makeText(requireContext(), "Check your connection", Toast.LENGTH_SHORT).show()
+                    showLoading(false)
+                    return false
+                }
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
@@ -93,8 +110,6 @@ class Search : Fragment(), SearchView.OnCloseListener {
                 return false
             }
         })
-        searchView.setIconifiedByDefault(true)
-        searchView.setOnCloseListener(this)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -103,11 +118,5 @@ class Search : Fragment(), SearchView.OnCloseListener {
             startActivity(mIntent)
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onClose(): Boolean {
-        Toast.makeText(context, "TOLONG", Toast.LENGTH_SHORT).show()
-        showLoading(false)
-        return true
     }
 }
