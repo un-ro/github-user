@@ -1,4 +1,4 @@
-package com.unero.githubuser.fragment
+package com.unero.githubuser.ui.fragment
 
 import android.os.Bundle
 import android.os.Handler

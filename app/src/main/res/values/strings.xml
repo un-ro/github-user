@@ -2,4 +2,12 @@
 <resources>
     <string name="app_name">Github User</string>
     <string name="search_hint">Enter word</string>
+    <string name="instruction">Click Search to Start…</string>
+    <string name="repo_value">%d Public Repository</string>
+    <string name="zero_follower">Doesn\'t have any followers</string>
+    <string name="zero_following">Doesn\'t following anyone</string>
+    <string name="tab_text_1">Followers</string>
+    <string name="dynamic_tab_1">%d Followers</string>
+    <string name="tab_text_2">Following</string>
+    <string name="dynamic_tab_2">%d Following</string>
 </resources>

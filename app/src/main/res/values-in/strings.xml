@@ -2,4 +2,12 @@
 <resources>
     <string name="app_name">Github User</string>
     <string name="search_hint">Masukkan Kata</string>
+    <string name="repo_value">%d Repository Publik</string>
+    <string name="zero_follower">Tidak diikuti pengguna lainnya</string>
+    <string name="zero_following">Tidak mengikuti pengguna lainnya</string>
+    <string name="tab_text_1">Pengikut</string>
+    <string name="tab_text_2">Mengikuti</string>
+    <string name="instruction">Klik tombol cari, untuk mulai...</string>
+    <string name="dynamic_tab_1">%d Pengikut</string>
+    <string name="dynamic_tab_2">%d Mengikuti</string>
 </resources>
