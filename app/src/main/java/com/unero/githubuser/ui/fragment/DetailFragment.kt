@@ -18,7 +18,7 @@ import com.unero.githubuser.ui.viewmodel.DetailViewModel
 import com.unero.githubuser.databinding.FragmentDetailBinding
 import es.dmoral.toasty.Toasty
 
-class Detail : Fragment() {
+class DetailFragment : Fragment() {
 
     companion object {
         @StringRes

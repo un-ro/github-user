@@ -12,18 +12,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.unero.githubuser.R
-import com.unero.githubuser.databinding.FragmentFollowerBinding
-import com.unero.githubuser.ui.adapter.FollowerAdapter
+import com.unero.githubuser.databinding.FragmentFollowingBinding
+import com.unero.githubuser.ui.adapter.FollowingAdapter
 import com.unero.githubuser.ui.viewmodel.DetailViewModel
 import es.dmoral.toasty.Toasty
 
-class Follower : Fragment() {
+class FollowingFragment : Fragment() {
 
     companion object {
         private val ARG_USERNAME = "username"
 
-        fun newInstance(username: String): Follower {
-            val fragment = Follower()
+        fun newInstance(username: String): FollowingFragment {
+            val fragment = FollowingFragment()
             val bundle = Bundle()
             bundle.putString(ARG_USERNAME, username)
             fragment.arguments = bundle
@@ -32,15 +32,15 @@ class Follower : Fragment() {
     }
 
     private lateinit var mViewModel: DetailViewModel
-    private lateinit var binding: FragmentFollowerBinding
-    private var adapter = FollowerAdapter()
+    private lateinit var binding: FragmentFollowingBinding
+    private var adapter = FollowingAdapter()
     private var isConnected: Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_follower, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_following, container, false)
         binding.lifecycleOwner = this
 
         binding.rv.adapter = adapter
@@ -54,8 +54,8 @@ class Follower : Fragment() {
         networkCheck()
 
         if (isConnected) {
-            mViewModel = ViewModelProvider(requireActivity()).get(DetailViewModel::class.java)
-            mViewModel.fetchFollower(arguments?.getString(ARG_USERNAME)!!)
+            mViewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
+            mViewModel.fetchFollowing(arguments?.getString(ARG_USERNAME)!!)
             render(true)
         } else {
             render(false)
@@ -71,7 +71,7 @@ class Follower : Fragment() {
 
     private fun render(isReady: Boolean) {
         if (isReady){
-            mViewModel.follower?.observe(viewLifecycleOwner, {
+            mViewModel.following?.observe(viewLifecycleOwner, {
                 if (it.size == 0){
                     binding.pb.visibility = View.INVISIBLE
                     binding.rv.visibility = View.INVISIBLE

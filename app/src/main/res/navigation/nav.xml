@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splash"
-        android:name="com.unero.githubuser.ui.fragment.Splash"
+        android:name="com.unero.githubuser.ui.fragment.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/search"
-        android:name="com.unero.githubuser.ui.fragment.Search"
+        android:name="com.unero.githubuser.ui.fragment.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/detail"
-        android:name="com.unero.githubuser.ui.fragment.Detail"
+        android:name="com.unero.githubuser.ui.fragment.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" >
         <argument

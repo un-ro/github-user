@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import com.unero.githubuser.R
 
-class Splash : Fragment() {
+class SplashFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

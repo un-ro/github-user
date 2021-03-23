@@ -19,7 +19,7 @@ import com.unero.githubuser.ui.adapter.SearchAdapter
 import com.unero.githubuser.ui.viewmodel.SearchViewModel
 import es.dmoral.toasty.Toasty
 
-class Search : Fragment(){
+class SearchFragment : Fragment(){
 
     private lateinit var binding: FragmentSearchBinding
     private lateinit var mViewModel: SearchViewModel

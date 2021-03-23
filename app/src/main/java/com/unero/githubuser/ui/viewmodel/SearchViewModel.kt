@@ -12,11 +12,7 @@ class SearchViewModel : ViewModel() {
 
     fun search(username: String): LiveData<Result> {
         dataMLD = Repository.search(username)
-        refresh()
-        return dataMLD
-    }
-
-    fun refresh() {
         dataLD = dataMLD
+        return dataMLD
     }
 }

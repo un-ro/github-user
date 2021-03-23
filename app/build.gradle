@@ -20,9 +20,13 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "GITHUB_TOKEN", '"2804d29d046e44601400ee96c8ef5fc5604f226b"')
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "GITHUB_TOKEN", '"2804d29d046e44601400ee96c8ef5fc5604f226b"')
         }
     }
     compileOptions {
