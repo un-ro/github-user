@@ -37,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:textStyle="bold"
             android:fontFamily="@font/anonymous_pro"
             android:text="@{profile.name}"
             android:textSize="20sp"
@@ -59,8 +60,8 @@
             android:id="@+id/tvCompany"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/imgAvatar"
-            app:layout_constraintStart_toEndOf="@id/tvLocation"
+            app:layout_constraintTop_toBottomOf="@id/tvLocation"
+            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="@{profile.company}" />
@@ -69,7 +70,7 @@
             android:id="@+id/tvRepo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tvLocation"
+            app:layout_constraintTop_toBottomOf="@id/tvCompany"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"/>
@@ -82,6 +83,7 @@
             app:layout_constraintTop_toBottomOf="@id/tvRepo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center"
             android:layout_margin="10dp"
             android:text="@{profile.bio}" />
 

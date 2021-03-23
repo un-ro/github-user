@@ -6,11 +6,17 @@ import androidx.lifecycle.ViewModel
 import com.unero.githubuser.data.Repository
 import com.unero.githubuser.data.model.Result
 
-class SearchViewModel(): ViewModel() {
-    var dataMLD: MutableLiveData<Result> = MutableLiveData()
+class SearchViewModel : ViewModel() {
+    var dataLD: LiveData<Result>? = null
+    private var dataMLD: MutableLiveData<Result> = MutableLiveData()
 
     fun search(username: String): LiveData<Result> {
         dataMLD = Repository.search(username)
+        refresh()
         return dataMLD
+    }
+
+    fun refresh() {
+        dataLD = dataMLD
     }
 }

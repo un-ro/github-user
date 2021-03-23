@@ -1,15 +1,12 @@
 package com.unero.githubuser.ui.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
 import com.unero.githubuser.R
 import com.unero.githubuser.data.model.User
-import com.unero.githubuser.databinding.ItemFollowBinding
 
-class FollowerAdapter: RecyclerView.Adapter<FollowerAdapter.ViewHolder>() {
+class FollowerAdapter: RecyclerView.Adapter<FollowViewHolder>() {
     private var mList = ArrayList<User>()
 
     fun setList(list: ArrayList<User>) {
@@ -18,21 +15,12 @@ class FollowerAdapter: RecyclerView.Adapter<FollowerAdapter.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        private val binding = ItemFollowBinding.bind(itemView)
-
-        fun bind(user: User) {
-            binding.tvUsername.text = user.login
-            Picasso.get().load(user.avatar_url).into(binding.imgAvatar)
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowViewHolder {
         val mView = LayoutInflater.from(parent.context).inflate(R.layout.item_follow, parent, false)
-        return ViewHolder(mView)
+        return FollowViewHolder(mView)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: FollowViewHolder, position: Int) {
         holder.bind(mList[position])
     }
 

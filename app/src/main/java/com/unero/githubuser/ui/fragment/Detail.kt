@@ -1,9 +1,10 @@
 package com.unero.githubuser.ui.fragment
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.annotation.StringRes
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -15,6 +16,7 @@ import com.unero.githubuser.ui.adapter.SectionsPagerAdapter
 import com.unero.githubuser.data.model.Profile
 import com.unero.githubuser.ui.viewmodel.DetailViewModel
 import com.unero.githubuser.databinding.FragmentDetailBinding
+import es.dmoral.toasty.Toasty
 
 class Detail : Fragment() {
 
@@ -28,12 +30,15 @@ class Detail : Fragment() {
 
     private lateinit var binding: FragmentDetailBinding
     private lateinit var mViewModel: DetailViewModel
+    private var isConnected: Boolean = true
+    private var username = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         mViewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
-        mViewModel.fetchProfile(arguments?.getString("id")!!)
+        username = arguments?.getString("id")!!
+        mViewModel.fetchProfile(username)
     }
 
     override fun onCreateView(
@@ -47,6 +52,7 @@ class Detail : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        networkCheck()
 
         // Tab Layout
         val sectionsPagerAdapter = SectionsPagerAdapter(this)
@@ -56,11 +62,35 @@ class Detail : Fragment() {
             tab.text = resources.getString(TAB_TITLES[pos])
         }.attach()
 
-        // Layout Related
-        mViewModel.profile?.observe(viewLifecycleOwner, {
-            binding.profile = it
-            drawIcon(it)
-        })
+        if (isConnected) {
+            // Layout Related`
+            mViewModel.profile?.observe(viewLifecycleOwner, {
+                binding.profile = it
+                drawIcon(it)
+            })
+        } else {
+            Toasty.error(requireContext(), R.string.no_connection, Toasty.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.clear()
+        inflater.inflate(R.menu.detail_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.refresh) {
+            mViewModel.refresh(username)
+            Toasty.info(requireContext(), "Data Refreshed", Toasty.LENGTH_SHORT).show()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun networkCheck() {
+        val cm = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network: NetworkInfo? = cm.activeNetworkInfo
+        isConnected = network?.isConnectedOrConnecting == true
     }
 
     private fun drawIcon(profile: Profile) {

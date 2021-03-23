@@ -10,4 +10,7 @@
     <string name="instruction">Klik tombol cari, untuk mulai...</string>
     <string name="dynamic_tab_1">%d Pengikut</string>
     <string name="dynamic_tab_2">%d Mengikuti</string>
+    <string name="no_connection">Cek koneksi anda terlebih dahulu</string>
+    <string name="wait_please">Tunggu sebentar…</string>
+    <string name="done">… Coba untuk scroll 😊</string>
 </resources>

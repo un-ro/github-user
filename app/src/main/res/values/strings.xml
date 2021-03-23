@@ -10,4 +10,7 @@
     <string name="dynamic_tab_1">%d Followers</string>
     <string name="tab_text_2">Following</string>
     <string name="dynamic_tab_2">%d Following</string>
+    <string name="no_connection">Check your connection first!</string>
+    <string name="done">Load Done 😊</string>
+    <string name="wait_please">Wait a minute</string>
 </resources>

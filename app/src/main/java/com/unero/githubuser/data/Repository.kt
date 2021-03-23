@@ -36,7 +36,14 @@ object Repository {
 
         call.enqueue(object: Callback<Profile> {
             override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
-                profile.value = response.body()
+                val wadah = response.body()
+                profile.value = wadah
+                if (wadah?.location == null) {
+                    profile.value?.location = "Not Included"
+                }
+                if (wadah?.company == null) {
+                    profile.value?.company = "Not Included"
+                }
             }
 
             override fun onFailure(call: Call<Profile>, t: Throwable) {

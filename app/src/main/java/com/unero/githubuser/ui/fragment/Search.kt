@@ -8,34 +8,29 @@ import android.net.NetworkInfo
 import android.os.Bundle
 import android.provider.Settings
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.unero.githubuser.R
+import com.unero.githubuser.databinding.FragmentSearchBinding
 import com.unero.githubuser.ui.adapter.SearchAdapter
 import com.unero.githubuser.ui.viewmodel.SearchViewModel
-import com.unero.githubuser.databinding.FragmentSearchBinding
 import es.dmoral.toasty.Toasty
 
 class Search : Fragment(){
 
     private lateinit var binding: FragmentSearchBinding
     private lateinit var mViewModel: SearchViewModel
-    private lateinit var adapter: SearchAdapter
+    private var adapter = SearchAdapter()
     private var isConnected: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
 
-        adapter = SearchAdapter()
-        adapter.notifyDataSetChanged()
-
         mViewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
-        render()
     }
 
     override fun onCreateView(
@@ -43,22 +38,27 @@ class Search : Fragment(){
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
+
+        binding.rv.adapter = adapter
+        binding.rv.setHasFixedSize(true)
+        binding.rv.layoutManager = LinearLayoutManager(requireContext())
+
         binding.lifecycleOwner = this
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.rv.layoutManager = LinearLayoutManager(requireContext())
-        binding.rv.adapter = adapter
         showLoading(false)
+        networkCheck()
+        // Custom Toasty
+        Toasty.custom(requireContext(), R.string.instruction, R.drawable.people_icon, R.color.toast ,Toasty.LENGTH_LONG, true, true).show()
+    }
 
+    private fun networkCheck() {
         val cm = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val actvieNetwork: NetworkInfo? = cm.activeNetworkInfo
         isConnected = actvieNetwork?.isConnectedOrConnecting == true
-
-        // Custom Toasty
-        Toasty.custom(requireContext(), R.string.instruction, R.drawable.people_icon, R.color.toast ,Toasty.LENGTH_LONG, true, true).show()
     }
 
     private fun showLoading(state: Boolean) {
@@ -69,18 +69,16 @@ class Search : Fragment(){
         }
     }
 
+    // Draw loading and result
     private fun render() {
-        mViewModel.dataMLD.observe(this, {
+        mViewModel.dataLD?.observe(this, {
             adapter.setData(it.items)
+            adapter.notifyDataSetChanged()
             showLoading(false)
+            Toasty.success(requireContext(), "${it.total_count} User", Toasty.LENGTH_SHORT).show()
         })
     }
 
-    private fun networkRemind(isIt: Boolean) {
-
-    }
-
-    // Menu
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater){
         super.onCreateOptionsMenu(menu, inflater)
         menu.clear()
@@ -93,15 +91,16 @@ class Search : Fragment(){
         searchView.queryHint = resources.getString(R.string.search_hint)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                if (isConnected){
+                networkCheck()
+                return if (isConnected){
                     mViewModel.search(query)
                     render()
                     showLoading(false)
-                    return true
+                    true
                 } else {
-                    Toast.makeText(requireContext(), "Check your connection", Toast.LENGTH_SHORT).show()
+                    Toasty.error(requireContext(), R.string.no_connection, Toasty.LENGTH_SHORT).show()
                     showLoading(false)
-                    return false
+                    false
                 }
             }
 
