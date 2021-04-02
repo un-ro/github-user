@@ -19,6 +19,7 @@ Recommendation:
 1. Splash Screen, share button, etc.
 
 ## Submission 2
+![Second Submission](git_asset/star_submission_2.png)
 Requirements:
 1. Search Page:
     - Search user by API
