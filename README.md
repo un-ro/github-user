@@ -41,3 +41,27 @@ Recommendation:
 1. Implement LiveData
 1. Localization (Indonesia & English)
 1. MVVM
+
+## Submission 3
+Requirements:
+1. Favorite User
+	- Add and delete user from list
+	- Show favorite list
+	- Item detail at list
+
+2. Reminder
+	- On Off Setting for reminder
+	- Daily reminder for each 9 AM
+
+3. Consumer App
+	- Create new Module to show favorite user
+	- Use COntent Provider
+
+Recommendation:
+1. Good UI / Layout
+1. Clean Code
+1. Splash Screen, Share
+1. Add Stack Widget for Favorite User page
+1. Use Retrofit, FAN, etc
+1. Use Room, Realm, etc
+1. Apply design pattern MVP / MVVM / Arch, etc
