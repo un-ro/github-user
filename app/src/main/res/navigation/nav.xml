@@ -7,30 +7,64 @@
 
     <fragment
         android:id="@+id/splash"
-        android:name="com.unero.githubuser.ui.fragment.SplashFragment"
+        android:name="com.unero.githubuser.ui.fragments.splash.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
-            android:id="@+id/action_splash_to_search"
-            app:destination="@id/search" />
-    </fragment>
-    <fragment
-        android:id="@+id/search"
-        android:name="com.unero.githubuser.ui.fragment.SearchFragment"
-        android:label="fragment_search"
-        tools:layout="@layout/fragment_search" >
-        <action
-            android:id="@+id/action_search_to_detail"
-            app:destination="@id/detail" />
+            android:id="@+id/action_splash_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:launchSingleTop="false"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/detail"
-        android:name="com.unero.githubuser.ui.fragment.DetailFragment"
+        android:name="com.unero.githubuser.ui.fragments.detail.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" >
         <argument
             android:name="username"
             app:argType="string"
             android:defaultValue="un-ro" />
+        <action
+            android:id="@+id/action_detail_self"
+            app:destination="@id/detail" />
+        <action
+            android:id="@+id/action_detail_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.unero.githubuser.ui.fragments.favorite.FavoriteFragment"
+        android:label="fragment_favorite"
+        tools:layout="@layout/fragment_favorite" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_detail"
+            app:destination="@id/detail" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.unero.githubuser.ui.fragments.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_favoriteFragment"
+            app:destination="@id/favoriteFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="https://www.unero.com/home" />
+        <action
+            android:id="@+id/action_homeFragment_to_detail"
+            app:destination="@id/detail" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.unero.githubuser.ui.fragments.setting.SettingFragment"
+        android:label="fragment_setting" />
 </navigation>

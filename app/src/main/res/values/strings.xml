@@ -13,4 +13,13 @@
     <string name="no_connection">Check your connection first!</string>
     <string name="done">Load Done 😊</string>
     <string name="wait_please">Wait a minute</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cd_img_logo">Application Logo</string>
+    <string name="desc_home">Or click Search Icon above.</string>
+    <string name="title_banner_home">Browse your Favorite User</string>
+    <string name="description_banner_home">Favorite User Illustration</string>
+    <string name="browse">Browse</string>
+    <string name="desc_image_home">Search Illustration</string>
+    <string name="title_appbar_favorite">Favorite</string>
 </resources>

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/black"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.fragment.SplashFragment">
+    tools:context=".ui.fragments.splash.SplashFragment">
 
     <ImageView
         android:id="@+id/imgLogo"
@@ -15,7 +15,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:src="@drawable/octocat" />
+        android:src="@drawable/octocat"
+        android:contentDescription="@string/cd_img_logo" />
 
     <TextView
         android:id="@+id/tvDesc"

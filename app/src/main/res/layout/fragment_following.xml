@@ -10,14 +10,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.fragment.tab.FollowingFragment">
+        tools:context=".ui.fragments.detail.FollowingFragment">
 
         <me.zhanghai.android.materialprogressbar.MaterialProgressBar
             android:id="@+id/pb"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:indeterminate="true"
-            android:visibility="gone"
+            android:visibility="visible"
             app:mpb_progressStyle="circular"
             style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
             app:layout_constraintTop_toTopOf="parent"
@@ -29,7 +29,7 @@
             android:id="@+id/rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/item_follow"
+            tools:listitem="@layout/item_user"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
