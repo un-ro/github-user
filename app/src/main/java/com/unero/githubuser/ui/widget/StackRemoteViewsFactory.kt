@@ -2,42 +2,54 @@ package com.unero.githubuser.ui.widget
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import androidx.core.os.bundleOf
+import com.bumptech.glide.Glide
 import com.unero.githubuser.R
+import com.unero.githubuser.data.local.Favorite
+import com.unero.githubuser.data.local.FavoriteDao
+import com.unero.githubuser.data.local.FavoriteDatabase
+import kotlinx.coroutines.InternalCoroutinesApi
 
+@InternalCoroutinesApi
 internal class StackRemoteViewsFactory(private val mContext: Context): RemoteViewsService.RemoteViewsFactory {
 
-    private val mWidgetItems = ArrayList<Bitmap>()
+    private val listFavorite = mutableListOf<Favorite>()
+    private lateinit var favDao: FavoriteDao
 
     override fun onCreate() {
+        favDao = FavoriteDatabase.getDatabase(mContext).dao()
     }
 
     override fun onDataSetChanged() {
-        mWidgetItems.add(BitmapFactory.decodeResource(mContext.resources, R.drawable.darth_vader))
-        mWidgetItems.add(BitmapFactory.decodeResource(mContext.resources, R.drawable.star_wars_logo))
-        mWidgetItems.add(BitmapFactory.decodeResource(mContext.resources, R.drawable.storm_trooper))
-        mWidgetItems.add(BitmapFactory.decodeResource(mContext.resources, R.drawable.starwars))
-        mWidgetItems.add(BitmapFactory.decodeResource(mContext.resources, R.drawable.falcon))
+        val list = favDao.getItemWidget()
+
+        listFavorite.addAll(list)
     }
 
     override fun onDestroy() {
     }
 
-    override fun getCount(): Int = mWidgetItems.size
+    override fun getCount(): Int = listFavorite.size
 
     override fun getViewAt(position: Int): RemoteViews {
         val rv = RemoteViews(mContext.packageName, R.layout.widget_item)
-        rv.setImageViewBitmap(R.id.imageView, mWidgetItems[position])
+
+        val image = Glide.with(mContext)
+            .asBitmap()
+            .load(listFavorite[position].avatar)
+            .submit()
+            .get()
+
+        rv.setImageViewBitmap(R.id.iv_widget, image)
+
         val extras = bundleOf(
-            FavoriteWidget.EXTRA_ITEM to position
+            FavoriteWidget.EXTRA_ITEM to listFavorite[position].username
         )
         val fillInIntent = Intent()
         fillInIntent.putExtras(extras)
-        rv.setOnClickFillInIntent(R.id.imageView, fillInIntent)
+        rv.setOnClickFillInIntent(R.id.iv_widget, fillInIntent)
         return rv
     }
 

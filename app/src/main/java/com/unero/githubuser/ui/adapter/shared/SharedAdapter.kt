@@ -2,20 +2,20 @@ package com.unero.githubuser.ui.adapter.shared
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.unero.githubuser.R
 import com.unero.githubuser.data.remote.model.User
 
 class SharedAdapter: RecyclerView.Adapter<SharedViewHolder>() {
-    private val mData = mutableListOf<User>()
+    private var data = emptyList<User>()
     private var fragmentName: String = ""
 
-    fun setData(items: List<User>?){
-        this.mData.clear()
-        if (items != null) {
-            this.mData.addAll(items)
-        }
-        notifyDataSetChanged()
+    fun setData(newData: List<User>?){
+        val diffUtil = newData?.let { SharedDiffUtil(data, it) }
+        val diffResult = diffUtil?.let { DiffUtil.calculateDiff(it) }
+        data = newData!!
+        diffResult?.dispatchUpdatesTo(this)
     }
 
     fun setFragment(name: String) {
@@ -28,8 +28,8 @@ class SharedAdapter: RecyclerView.Adapter<SharedViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: SharedViewHolder, position: Int) {
-        holder.bind(mData[position], this.fragmentName)
+        holder.bind(data[position], this.fragmentName)
     }
 
-    override fun getItemCount(): Int = mData.size
+    override fun getItemCount(): Int = data.size
 }

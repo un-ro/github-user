@@ -4,7 +4,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import com.unero.githubuser.R
 import com.unero.githubuser.data.remote.model.User
 import com.unero.githubuser.databinding.ItemUserBinding
@@ -14,7 +14,7 @@ class SharedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(user: User, name: String) {
         binding.tvUsername.text = user.login
-        Picasso.get().load(user.avatar_url).into(binding.imgAvatar)
+        Glide.with(itemView).load(user.avatar_url).into(binding.imgAvatar)
         binding.root.setOnClickListener {
             val bundle = bundleOf("username" to user.login)
             if (name == "HomeFragment") {

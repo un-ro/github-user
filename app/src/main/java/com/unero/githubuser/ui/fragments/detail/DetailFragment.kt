@@ -11,8 +11,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
-import com.squareup.picasso.Picasso
 import com.unero.githubuser.R
 import com.unero.githubuser.data.local.Favorite
 import com.unero.githubuser.data.remote.model.Profile
@@ -72,12 +72,12 @@ class DetailFragment : Fragment() {
             }
         })
 
-        // Tab Layout
         drawTab()
         appbar()
     }
 
     private fun editProfile(profile: Profile): Profile {
+        // Change profile value if there are null values
         profile.apply {
             if (company != null) company = buildString {
                 append(company!!.take(15))
@@ -91,11 +91,13 @@ class DetailFragment : Fragment() {
     }
 
     private fun setupFAB() {
+        // Create object for insert
         val favorite = profile.login?.let { Favorite(
                 0, it, profile.name.orEmpty(), profile.avatar_url.orEmpty(),
                 profile.followers ?: 0, profile.following ?: 0)
         }
 
+        // Observe status value, change drawable and database action
         viewModel.status.observe(viewLifecycleOwner, {
             if (it) {
                 binding.fabFav.apply {
@@ -130,11 +132,13 @@ class DetailFragment : Fragment() {
         }
     }
 
+    // Get data from api
     private fun fetch(username: String){
         viewModel.findDetail(username)
         viewModel.listFollow(username)
     }
 
+    // Material Appbar
     private fun appbar() {
         binding.topbar.setNavigationOnClickListener {
             findNavController().navigate(R.id.action_detail_to_homeFragment)
@@ -142,6 +146,7 @@ class DetailFragment : Fragment() {
 
         binding.topbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
+                // Share method, text value to Implicit Intent
                 R.id.btn_share -> {
                     val paragraph = """
                         Hey I found cool user ${profile.login} from Github User App
@@ -156,6 +161,7 @@ class DetailFragment : Fragment() {
                     startActivity(shareIntent)
                     true
                 }
+                // Intent go to Browser with link to Account Site
                 R.id.btn_link -> {
                     val intent = Intent(Intent.ACTION_VIEW).apply {
                         data = profile.html_url?.toUri()
@@ -168,6 +174,7 @@ class DetailFragment : Fragment() {
         }
     }
 
+    // TabLayout and ViewPager
     private fun drawTab(){
         binding.viewPager.adapter = SectionsPagerAdapter(this)
         TabLayoutMediator(binding.tabs, binding.viewPager) {tab, pos ->
@@ -175,12 +182,15 @@ class DetailFragment : Fragment() {
         }.attach()
     }
 
+    // Changing UI like icon, text from object
     private fun drawIcon(profile: Profile) {
-        Picasso.get().load(profile.avatar_url).into(binding.imgAvatar)
+        // Download image from url and set text from object value
+        Glide.with(this).load(profile.avatar_url).into(binding.imgAvatar)
         val repo = resources.getString(R.string.repo_value, profile.public_repos)
         val tvFollower = resources.getString(R.string.dynamic_tab_1, profile.followers)
         val tvFollowing = resources.getString(R.string.dynamic_tab_2, profile.following)
 
+        // Binding
         binding.apply {
             pb.visibility = View.GONE
             binding.tvRepo.text = repo
@@ -194,6 +204,7 @@ class DetailFragment : Fragment() {
         }
     }
 
+    // Change status value from viewmodel from search Favorite
     private fun setFavorite(username: String) {
         viewModel.search(username).observe(viewLifecycleOwner, {
             viewModel.setStatus(it != null)

@@ -71,7 +71,6 @@ class FollowingFragment : Fragment() {
                 binding.noFollow.visibility = View.VISIBLE
             } else {
                 adapter.setData(following)
-                adapter.notifyDataSetChanged()
                 binding.pb.visibility = View.INVISIBLE
                 binding.noFollow.visibility = View.INVISIBLE
                 binding.rv.visibility = View.VISIBLE

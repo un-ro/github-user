@@ -28,4 +28,7 @@ interface FavoriteDao {
 
     @Query("SELECT * FROM fav")
     fun getCursor(): Cursor
+
+    @Query("SELECT * FROM fav")
+    fun getItemWidget(): List<Favorite>
 }

@@ -76,7 +76,6 @@ class HomeFragment : Fragment() {
                 val total = it.body()?.total_count
                 val listUser: List<User>? = it.body()?.items
                 adapter.setData(listUser)
-                adapter.notifyDataSetChanged()
                 if (total == 0) {
                     zeroResult()
                 } else {
