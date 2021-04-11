@@ -7,17 +7,17 @@ import androidx.room.RoomDatabase
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.internal.synchronized
 
-@Database(entities = [UserEntity::class], version = 1, exportSchema = false)
-abstract class UserDatabase: RoomDatabase() {
+@Database(entities = [Favorite::class], version = 1, exportSchema = false)
+abstract class FavoriteDatabase: RoomDatabase() {
 
-    abstract fun userDao(): UserDao
+    abstract fun dao(): FavoriteDao
 
     companion object {
         @Volatile
-        private var INSTANCE: UserDatabase? = null
+        private var INSTANCE: FavoriteDatabase? = null
 
         @InternalCoroutinesApi
-        fun getDatabase(context: Context): UserDatabase {
+        fun getDatabase(context: Context): FavoriteDatabase {
             val temp = INSTANCE
             if (temp != null) {
                 return temp
@@ -25,11 +25,11 @@ abstract class UserDatabase: RoomDatabase() {
             synchronized(this){
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    UserDatabase::class.java,
-                    "userDB"
+                    FavoriteDatabase::class.java,
+                    "favDB"
                 ).build()
                 INSTANCE = instance
-                return INSTANCE as UserDatabase
+                return INSTANCE as FavoriteDatabase
             }
         }
     }

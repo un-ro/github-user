@@ -1,8 +1,5 @@
 package com.unero.githubuser.ui.fragments.detail
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,33 +9,21 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.unero.githubuser.R
-import com.unero.githubuser.RemoteViewModel
 import com.unero.githubuser.data.remote.model.User
 import com.unero.githubuser.databinding.FragmentFollowingBinding
-import com.unero.githubuser.ui.adapter.SharedAdapter
+import com.unero.githubuser.ui.adapter.shared.SharedAdapter
+import kotlinx.coroutines.InternalCoroutinesApi
 
+@InternalCoroutinesApi
 class FollowingFragment : Fragment() {
 
-    companion object {
-        private val ARG_USERNAME = "username"
-
-        fun newInstance(username: String): FollowingFragment {
-            val fragment = FollowingFragment()
-            val bundle = Bundle()
-            bundle.putString(ARG_USERNAME, username)
-            fragment.arguments = bundle
-            return fragment
-        }
-    }
-
-    private lateinit var viewModel: RemoteViewModel
+    private lateinit var viewModel: DetailViewModel
     private lateinit var binding: FragmentFollowingBinding
     private lateinit var adapter: SharedAdapter
-    private var isConnected: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity()).get(RemoteViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(DetailViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -62,6 +47,10 @@ class FollowingFragment : Fragment() {
             }
         })
 
+        viewModel.errorMessage.observe(viewLifecycleOwner, {
+            render(false, null)
+        })
+
         return binding.root
     }
 
@@ -71,12 +60,6 @@ class FollowingFragment : Fragment() {
         binding.rv.adapter = adapter
         binding.rv.setHasFixedSize(true)
         binding.rv.layoutManager = LinearLayoutManager(requireContext())
-    }
-
-    private fun networkCheck() {
-        val cm = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val network: NetworkInfo? = cm.activeNetworkInfo
-        isConnected = network?.isConnectedOrConnecting == true
     }
 
     private fun render(isReady: Boolean, following: List<User>?) {

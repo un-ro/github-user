@@ -1,4 +1,4 @@
-package com.unero.githubuser.util
+package com.unero.githubuser.ui.fragments.setting
 
 import android.app.*
 import android.content.BroadcastReceiver
@@ -11,8 +11,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.unero.githubuser.MainActivity
 import com.unero.githubuser.R
-import java.text.ParseException
-import java.text.SimpleDateFormat
 import java.util.*
 
 class AlarmReceiver : BroadcastReceiver() {

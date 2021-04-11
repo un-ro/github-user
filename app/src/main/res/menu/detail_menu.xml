@@ -6,12 +6,12 @@
         android:id="@+id/btn_share"
         android:icon="@drawable/icon_share"
         android:title="Share"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/btn_fav"
-        android:icon="@drawable/ic_fav"
-        android:title="Favorite"
-        app:showAsAction="always" />
+        android:id="@+id/btn_link"
+        android:icon="@drawable/ic_link"
+        android:title="Github Profile"
+        app:showAsAction="ifRoom" />
 
 </menu>

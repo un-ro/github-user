@@ -2,38 +2,35 @@ package com.unero.githubuser.ui.fragments.home
 
 import android.app.SearchManager
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.unero.githubuser.R
-import com.unero.githubuser.RemoteViewModel
 import com.unero.githubuser.data.remote.model.User
 import com.unero.githubuser.databinding.FragmentHomeBinding
-import com.unero.githubuser.ui.adapter.SharedAdapter
+import com.unero.githubuser.ui.adapter.shared.SharedAdapter
 import de.mateware.snacky.Snacky
+import kotlinx.coroutines.InternalCoroutinesApi
 
+@InternalCoroutinesApi
 class HomeFragment : Fragment() {
 
-    private lateinit var viewModel: RemoteViewModel
+    private lateinit var viewModel: HomeViewModel
     private lateinit var binding: FragmentHomeBinding
     private lateinit var adapter: SharedAdapter
-    private var isConnected: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProvider(this).get(RemoteViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -56,6 +53,7 @@ class HomeFragment : Fragment() {
         showLoading(false)
         setupRV()
         appbar()
+        errorInfo()
 
         binding.materialButton.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_favoriteFragment)
@@ -68,12 +66,6 @@ class HomeFragment : Fragment() {
         binding.rv.setHasFixedSize(true)
         binding.rv.layoutManager = LinearLayoutManager(requireContext())
         binding.rv.adapter = adapter
-    }
-
-    private fun networkCheck() {
-        val cm = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val actvieNetwork: NetworkInfo? = cm.activeNetworkInfo
-        isConnected = actvieNetwork?.isConnectedOrConnecting == true
     }
 
     private fun render(query: String) {
@@ -102,6 +94,16 @@ class HomeFragment : Fragment() {
                     .error()
                     .show()
             }
+        })
+    }
+
+    private fun errorInfo() {
+        viewModel.errorMessage.observe(viewLifecycleOwner, {
+            Snacky.builder()
+                    .setView(requireView())
+                    .setText(it)
+                    .error()
+                    .show()
         })
     }
 

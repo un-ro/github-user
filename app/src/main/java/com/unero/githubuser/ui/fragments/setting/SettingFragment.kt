@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.provider.Settings
 import androidx.preference.*
 import com.unero.githubuser.R
-import com.unero.githubuser.util.AlarmReceiver
 
 class SettingFragment: PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener  {
 

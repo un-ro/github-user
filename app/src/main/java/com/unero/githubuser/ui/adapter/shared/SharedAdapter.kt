@@ -1,4 +1,4 @@
-package com.unero.githubuser.ui.adapter
+package com.unero.githubuser.ui.adapter.shared
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

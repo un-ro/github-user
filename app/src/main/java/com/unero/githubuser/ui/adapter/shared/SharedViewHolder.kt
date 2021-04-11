@@ -1,6 +1,5 @@
-package com.unero.githubuser.ui.adapter
+package com.unero.githubuser.ui.adapter.shared
 
-import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
@@ -17,7 +16,7 @@ class SharedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         binding.tvUsername.text = user.login
         Picasso.get().load(user.avatar_url).into(binding.imgAvatar)
         binding.root.setOnClickListener {
-            val bundle = bundleOf("id" to user.login)
+            val bundle = bundleOf("username" to user.login)
             if (name == "HomeFragment") {
                 it.findNavController().navigate(R.id.action_homeFragment_to_detail, bundle)
             } else {

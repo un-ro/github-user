@@ -22,4 +22,6 @@
     <string name="browse">Browse</string>
     <string name="desc_image_home">Search Illustration</string>
     <string name="title_appbar_favorite">Favorite</string>
+    <string name="toast_delete">Favorite deleted</string>
+    <string name="toast_insert">Added to Favorite</string>
 </resources>

@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <permission android:name="com.unero.githubuser.READ_DATABASE" android:protectionLevel="normal" />
+    <permission android:name="com.unero.githubuser.WRITE_DATABASE" android:protectionLevel="normal" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/logo"
@@ -12,10 +15,18 @@
         android:roundIcon="@mipmap/logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.NoActionBar">
-        <receiver
-            android:name=".util.AlarmReceiver"
+        <provider
+            android:name=".provider.FavoriteProvider"
+            android:authorities="com.unero.githubuser"
+            android:readPermission="com.unero.githubuser.READ_DATABASE"
+            android:writePermission="com.unero.githubuser.WRITE_DATABASE"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="true" />
+
+        <receiver
+            android:name=".ui.fragments.setting.AlarmReceiver"
+            android:enabled="true"
+            android:exported="true" />
 
         <activity android:name=".MainActivity">
             <intent-filter>

@@ -1,0 +1,23 @@
+package com.unero.githubuser.ui.adapter.favorite
+
+import android.view.View
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
+import com.unero.githubuser.R
+import com.unero.githubuser.data.local.Favorite
+import com.unero.githubuser.databinding.ItemFavoriteMainBinding
+
+class FavoriteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private val binding = ItemFavoriteMainBinding.bind(itemView)
+
+    fun bind(favorite: Favorite) {
+        binding.favorite = favorite
+        Picasso.get().load(favorite.avatar).into(binding.ivAvatar)
+        binding.ivAvatar.setOnClickListener {
+            val bundle = bundleOf("username" to favorite.username)
+            it.findNavController().navigate(R.id.action_favoriteFragment_to_detail, bundle)
+        }
+    }
+}
