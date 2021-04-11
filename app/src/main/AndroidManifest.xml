@@ -5,8 +5,12 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <permission android:name="com.unero.githubuser.READ_DATABASE" android:protectionLevel="normal" />
-    <permission android:name="com.unero.githubuser.WRITE_DATABASE" android:protectionLevel="normal" />
+    <permission
+        android:name="com.unero.githubuser.READ_DATABASE"
+        android:protectionLevel="normal" />
+    <permission
+        android:name="com.unero.githubuser.WRITE_DATABASE"
+        android:protectionLevel="normal" />
 
     <application
         android:allowBackup="true"
@@ -15,13 +19,27 @@
         android:roundIcon="@mipmap/logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.NoActionBar">
+        <receiver android:name=".ui.widget.FavoriteWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/favorite_widget_info" />
+        </receiver>
+
+        <service
+            android:name=".ui.widget.StackWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
+
         <provider
             android:name=".provider.FavoriteProvider"
             android:authorities="com.unero.githubuser"
-            android:readPermission="com.unero.githubuser.READ_DATABASE"
-            android:writePermission="com.unero.githubuser.WRITE_DATABASE"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"
+            android:readPermission="com.unero.githubuser.READ_DATABASE"
+            android:writePermission="com.unero.githubuser.WRITE_DATABASE" />
 
         <receiver
             android:name=".ui.fragments.setting.AlarmReceiver"

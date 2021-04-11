@@ -20,7 +20,7 @@ android {
     }
 
     buildTypes.each {
-        it.buildConfigField 'String', 'TOKEN', '"TOKEN"'
+        it.buildConfigField 'String', 'TOKEN', '"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"'
     }
 
     compileOptions {

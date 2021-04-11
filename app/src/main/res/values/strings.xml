@@ -24,4 +24,7 @@
     <string name="title_appbar_favorite">Favorite</string>
     <string name="toast_delete">Favorite deleted</string>
     <string name="toast_insert">Added to Favorite</string>
+    <string name="appwidget_text">STAR WARS BANNER</string>
+    <string name="add_widget">Add widget</string>
+    <string name="empty_text">NO DATA</string>
 </resources>
