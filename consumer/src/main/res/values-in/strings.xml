@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="followers_values">%d Pengikut</string>
+    <string name="following_values">%d Mengikuti</string>
+    <string name="lang_desc">Pengaturan Bahasa</string>
+    <string name="lang_title">Ubah Bahasa</string>
+    <string name="no_data">Belum ada Data</string>
+</resources>

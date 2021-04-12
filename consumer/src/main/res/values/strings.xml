@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Consumer</string>
+    <string name="app_name" translatable="false">Consumer</string>
+    <string name="followers_values">%d Followers</string>
+    <string name="following_values">%d Following</string>
+    <string name="lang_desc">Language Setting</string>
+    <string name="lang_title">Change Language</string>
+    <string name="no_data">No Data Available</string>
 </resources>

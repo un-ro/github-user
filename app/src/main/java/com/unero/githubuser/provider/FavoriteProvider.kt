@@ -19,7 +19,7 @@ class FavoriteProvider : ContentProvider() {
         private const val AUTHORITY = "com.unero.githubuser"
         private const val TABLE = "fav"
 
-        private const val FAV = 1
+        private const val FAV = 0
         private val uriMatcher = UriMatcher(UriMatcher.NO_MATCH)
 
         init {

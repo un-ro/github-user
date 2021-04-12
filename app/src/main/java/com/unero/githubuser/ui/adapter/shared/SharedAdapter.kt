@@ -8,14 +8,13 @@ import com.unero.githubuser.R
 import com.unero.githubuser.data.remote.model.User
 
 class SharedAdapter: RecyclerView.Adapter<SharedViewHolder>() {
-    private var data = emptyList<User>()
+    private var data = mutableListOf<User>()
     private var fragmentName: String = ""
 
     fun setData(newData: List<User>?){
-        val diffUtil = newData?.let { SharedDiffUtil(data, it) }
-        val diffResult = diffUtil?.let { DiffUtil.calculateDiff(it) }
-        data = newData!!
-        diffResult?.dispatchUpdatesTo(this)
+        this.data.clear()
+        newData?.let { this.data.addAll(it) }
+        notifyDataSetChanged()
     }
 
     fun setFragment(name: String) {

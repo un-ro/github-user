@@ -66,21 +66,26 @@ class FollowerFragment : Fragment() {
     private fun render(isReady: Boolean, followers: List<User>?) {
         if (isReady){
             if (followers?.size == 0){
-                binding.pb.visibility = View.INVISIBLE
-                binding.rv.visibility = View.INVISIBLE
-                binding.noFollow.text = resources.getString(R.string.zero_follower)
-                binding.noFollow.visibility = View.VISIBLE
+                binding.apply {
+                    pb.visibility = View.INVISIBLE
+                    rv.visibility = View.INVISIBLE
+                    noFollow.text = resources.getString(R.string.zero_follower)
+                    noFollow.visibility = View.VISIBLE
+                }
             } else {
                 adapter.setData(followers)
+                adapter.notifyDataSetChanged()
                 binding.pb.visibility = View.INVISIBLE
                 binding.noFollow.visibility = View.INVISIBLE
                 binding.rv.visibility = View.VISIBLE
             }
         } else {
-            binding.pb.visibility = View.INVISIBLE
-            binding.rv.visibility = View.INVISIBLE
-            binding.noFollow.text = resources.getString(R.string.no_connection)
-            binding.noFollow.visibility = View.VISIBLE
+            binding.apply {
+                pb.visibility = View.INVISIBLE
+                rv.visibility = View.INVISIBLE
+                noFollow.text = resources.getString(R.string.no_connection)
+                noFollow.visibility = View.VISIBLE
+            }
         }
     }
 }

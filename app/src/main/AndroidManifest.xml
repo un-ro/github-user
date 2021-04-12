@@ -34,8 +34,8 @@
             android:permission="android.permission.BIND_REMOTEVIEWS"/>
 
         <provider
-            android:name=".provider.FavoriteProvider"
             android:authorities="com.unero.githubuser"
+            android:name=".provider.FavoriteProvider"
             android:enabled="true"
             android:exported="true"
             android:readPermission="com.unero.githubuser.READ_DATABASE"
