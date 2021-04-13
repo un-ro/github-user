@@ -1,5 +1,7 @@
 package com.unero.consumer.ui.adapter
 
+import android.content.Intent
+import android.net.Uri
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -12,5 +14,10 @@ class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(favorite: Favorite) {
         Glide.with(itemView).load(favorite.avatar).into(binding.ivAvatar)
         binding.favorite = favorite
+        binding.root.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse("https://github.com/${favorite.username}")
+            it.context.startActivity(intent)
+        }
     }
 }

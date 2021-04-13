@@ -83,7 +83,7 @@ class HomeFragment : Fragment() {
                     illustration(false)
                     Snacky.builder()
                         .setView(requireView())
-                        .setText("Found $total Users")
+                        .setText(getString(R.string.total_result, total))
                         .success()
                         .show()
                 }
@@ -109,8 +109,8 @@ class HomeFragment : Fragment() {
 
     private fun zeroResult(){
         illustration(true)
-        binding.ivIllustration.setImageResource(R.drawable.undraw_lost_bqr2)
-        binding.tvDescHelp.text = "Not found any User"
+        binding.ivIllustration.setImageResource(R.drawable.ic_undraw_empty)
+        binding.tvDescHelp.text = getString(R.string.no_result)
     }
 
     private fun appbar(){

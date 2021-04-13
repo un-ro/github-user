@@ -148,10 +148,7 @@ class DetailFragment : Fragment() {
             when (menuItem.itemId) {
                 // Share method, text value to Implicit Intent
                 R.id.btn_share -> {
-                    val paragraph = """
-                        Hey I found cool user ${profile.login} from Github User App
-                        Check it out ${profile.html_url}
-                    """.trimIndent()
+                    val paragraph = getString(R.string.share_paragraph, profile.login, profile.html_url)
                     val intent = Intent().apply {
                         action = Intent.ACTION_SEND
                         putExtra(Intent.EXTRA_TEXT, paragraph)

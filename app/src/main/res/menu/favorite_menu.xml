@@ -3,16 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/item_search"
-        android:icon="@drawable/icon_search"
-        android:title="Search User"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="collapseActionView|ifRoom" />
-
-    <item
         android:id="@+id/item_delete_all"
         android:icon="@drawable/ic_delete_all"
-        android:title="Delete All"
+        android:title="@string/item_delete_all"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="collapseActionView|ifRoom" />
 

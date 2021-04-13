@@ -1,7 +1,10 @@
 package com.unero.githubuser.ui.fragments.detail
 
 import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.unero.githubuser.data.local.Favorite
 import com.unero.githubuser.data.local.FavoriteDatabase
 import com.unero.githubuser.data.remote.model.Profile
@@ -83,7 +86,7 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun search(query: String): LiveData<Favorite> {
-        return repository.searchOne(query)
+        return repository.searchFavorite(query)
     }
 
     fun setStatus(boolean: Boolean) {

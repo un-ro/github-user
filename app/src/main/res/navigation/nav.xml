@@ -22,11 +22,11 @@
         android:id="@+id/detail"
         android:name="com.unero.githubuser.ui.fragments.detail.DetailFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" >
+        tools:layout="@layout/fragment_detail">
         <argument
             android:name="username"
-            app:argType="string"
-            android:defaultValue="un-ro" />
+            android:defaultValue="un-ro"
+            app:argType="string" />
         <action
             android:id="@+id/action_detail_self"
             app:destination="@id/detail" />
@@ -35,6 +35,9 @@
             app:destination="@id/homeFragment"
             app:launchSingleTop="true"
             app:popUpToInclusive="true" />
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="http://www.unerouno.com/user/{username}" />
     </fragment>
     <fragment
         android:id="@+id/favoriteFragment"

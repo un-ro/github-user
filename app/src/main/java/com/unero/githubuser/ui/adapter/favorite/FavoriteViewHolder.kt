@@ -1,7 +1,6 @@
 package com.unero.githubuser.ui.adapter.favorite
 
 import android.view.View
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView

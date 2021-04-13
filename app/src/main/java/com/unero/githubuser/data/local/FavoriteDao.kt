@@ -2,12 +2,16 @@ package com.unero.githubuser.data.local
 
 import android.database.Cursor
 import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavoriteDao {
 
+    // App
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun add(favorite: Favorite)
 
@@ -21,14 +25,16 @@ interface FavoriteDao {
     fun search(query: String): Flow<List<Favorite>>
 
     @Query("SELECT * FROM fav WHERE username = :query")
-    fun searchOne(query: String): LiveData<Favorite>
+    fun searchFavorite(query: String): LiveData<Favorite>
 
     @Query("DELETE FROM fav")
     fun deleteAll()
 
+    // Content Provider
     @Query("SELECT * FROM fav")
     fun getCursor(): Cursor
 
+    // Widget
     @Query("SELECT * FROM fav")
     fun getItemWidget(): List<Favorite>
 }

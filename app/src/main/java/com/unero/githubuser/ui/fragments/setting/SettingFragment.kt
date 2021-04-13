@@ -4,7 +4,10 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.Settings
-import androidx.preference.*
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
+import androidx.preference.SwitchPreference
 import com.unero.githubuser.R
 
 class SettingFragment: PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener  {
@@ -16,13 +19,13 @@ class SettingFragment: PreferenceFragmentCompat(), SharedPreferences.OnSharedPre
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
-        setupLocaleSettings()
-        setupReminder()
+        localeSettings()
+        reminder()
         alarmReceiver = AlarmReceiver()
-        dd()
+        setSharedPref()
     }
 
-    private fun dd() {
+    private fun setSharedPref() {
         val sharedPreferences = preferenceManager.sharedPreferences
         switch.isChecked = sharedPreferences.getBoolean(reminder, false)
     }
@@ -48,12 +51,12 @@ class SettingFragment: PreferenceFragmentCompat(), SharedPreferences.OnSharedPre
         setReminder(state)
     }
 
-    private fun setupReminder() {
+    private fun reminder() {
         reminder = "key_alarm"
         switch = findPreference<SwitchPreference>(reminder) as SwitchPreference
     }
 
-    private fun setupLocaleSettings() {
+    private fun localeSettings() {
         val languagePreference: Preference? = findPreference("key_language")
         val languageIntent = Intent(Settings.ACTION_LOCALE_SETTINGS)
         languagePreference?.intent = languageIntent

@@ -2,11 +2,11 @@ package com.unero.githubuser.ui.adapter.shared
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.unero.githubuser.R
 import com.unero.githubuser.data.remote.model.User
 
+// Used by Home, Following, Followers
 class SharedAdapter: RecyclerView.Adapter<SharedViewHolder>() {
     private var data = mutableListOf<User>()
     private var fragmentName: String = ""

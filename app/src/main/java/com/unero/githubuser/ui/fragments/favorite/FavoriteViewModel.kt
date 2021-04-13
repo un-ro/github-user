@@ -3,7 +3,6 @@ package com.unero.githubuser.ui.fragments.favorite
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.unero.githubuser.data.local.Favorite
 import com.unero.githubuser.data.local.FavoriteDatabase
@@ -34,9 +33,5 @@ class FavoriteViewModel(application: Application): AndroidViewModel(application)
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteAll()
         }
-    }
-
-    fun search(query: String): LiveData<List<Favorite>> {
-        return repository.search(query).asLiveData()
     }
 }

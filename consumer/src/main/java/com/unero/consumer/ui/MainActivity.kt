@@ -3,6 +3,7 @@ package com.unero.consumer.ui
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -61,7 +62,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showInfo() {
-        binding.tvNoData.text = getString(R.string.no_data)
+        binding.apply {
+            ivIllustration.visibility = View.VISIBLE
+            tvNoData.text = getString(R.string.no_data)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadData()
     }
 
     private fun setupRV() {

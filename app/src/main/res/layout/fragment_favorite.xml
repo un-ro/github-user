@@ -23,11 +23,10 @@
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/topbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                app:navigationIcon="@drawable/icon_back"
                 app:title="@string/title_appbar_favorite"
                 app:menu="@menu/favorite_menu"
-                style="@style/Widget.MaterialComponents.Toolbar.Primary"/>
+                style="@style/Widget.App.Toolbar"/>
 
         </com.google.android.material.appbar.AppBarLayout>
         <!-- End TopBar -->
@@ -37,7 +36,7 @@
             android:visibility="gone"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:src="@drawable/undraw_lost_bqr2"
+            android:src="@drawable/ic_undraw_empty"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +47,7 @@
             android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Empty Favorite"
+            android:text="@string/empty_favorite"
             app:layout_constraintTop_toBottomOf="@id/iv_no_data"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

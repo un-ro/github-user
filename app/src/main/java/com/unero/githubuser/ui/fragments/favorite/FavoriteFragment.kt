@@ -58,14 +58,15 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun appbar() {
+        binding.topbar.setNavigationOnClickListener {
+            findNavController().navigate(R.id.action_favoriteFragment_to_homeFragment)
+        }
+
         binding.topbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.item_search -> {
-                    true
-                }
                 R.id.item_delete_all -> {
                     viewModel.deleteAll()
-                    Toasty.success(requireContext(), "Sukses delete all", Toasty.LENGTH_SHORT).show()
+                    Toasty.success(requireContext(), getString(R.string.toast_delete_all), Toasty.LENGTH_SHORT).show()
                     findNavController().navigate(R.id.action_favoriteFragment_to_homeFragment)
                     true
                 }

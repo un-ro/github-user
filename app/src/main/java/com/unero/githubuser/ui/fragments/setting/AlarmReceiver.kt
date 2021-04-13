@@ -16,13 +16,7 @@ import java.util.*
 class AlarmReceiver : BroadcastReceiver() {
 
     companion object {
-        const val ALARM_TYPE = "repeat"
-        const val ALARM_MESSAGE = "message"
-        const val EXTRA_TYPE = "type"
-
         private const val ID_ALARM = 100
-
-        private const val TIME_FORMAT = "HH:mm"
     }
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -31,10 +25,10 @@ class AlarmReceiver : BroadcastReceiver() {
 
     // Show Notification
     private fun showReminder(context: Context) {
-        val channelId = "ch-1"
+        val channelId = "channel_1337"
         val channelName = "GithubUSer Channel"
 
-        // Pending Intent
+        // Pending Intent back to MainActivity
         val intent = Intent(context, MainActivity::class.java)
         val pendingIntent = TaskStackBuilder.create(context)
                 .addParentStack(MainActivity::class.java)
@@ -43,11 +37,12 @@ class AlarmReceiver : BroadcastReceiver() {
 
         val notificationManagerCompat = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+
         val builder = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.icon_notification)
             .setContentIntent(pendingIntent)
-            .setContentTitle("Github User")
-            .setContentText("BALEK O COK!")
+            .setContentTitle(context.resources.getString(R.string.alarm_title))
+            .setContentText(context.resources.getString(R.string.alarm_content))
             .setColor(ContextCompat.getColor(context, android.R.color.transparent))
             .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
             .setSound(alarmSound)
@@ -75,6 +70,7 @@ class AlarmReceiver : BroadcastReceiver() {
                     PendingIntent.getBroadcast(context, ID_ALARM, intent, 0)
                 }
 
+        // Set 9 AM
         val repeatingTime = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, 9)
             set(Calendar.MINUTE, 0)
@@ -90,7 +86,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         Toast.makeText(
                 context,
-                "Daily Reminder Activated",
+                R.string.alarm_active,
                 Toast.LENGTH_SHORT
         ).show()
     }
@@ -106,7 +102,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         Toast.makeText(
                 context,
-                "Daily Reminder Deactivated",
+                R.string.alarm_deactive,
                 Toast.LENGTH_SHORT
         ).show()
     }

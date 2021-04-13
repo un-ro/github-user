@@ -2,9 +2,8 @@ package com.unero.githubuser.data.repository
 
 import android.database.Cursor
 import androidx.lifecycle.LiveData
-import com.unero.githubuser.data.local.FavoriteDao
 import com.unero.githubuser.data.local.Favorite
-import kotlinx.coroutines.flow.Flow
+import com.unero.githubuser.data.local.FavoriteDao
 
 class LocalRepository(private val favoriteDao: FavoriteDao) {
 
@@ -18,18 +17,15 @@ class LocalRepository(private val favoriteDao: FavoriteDao) {
         favoriteDao.delete(query)
     }
 
-    fun search(query: String): Flow<List<Favorite>> {
-        return favoriteDao.search(query)
-    }
-
-    fun searchOne(query: String): LiveData<Favorite> {
-        return favoriteDao.searchOne(query)
+    fun searchFavorite(query: String): LiveData<Favorite> {
+        return favoriteDao.searchFavorite(query)
     }
 
     fun deleteAll() {
         favoriteDao.deleteAll()
     }
 
+    // Content Provider
     fun getCursor(): Cursor {
         return favoriteDao.getCursor()
     }

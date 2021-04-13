@@ -24,7 +24,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_margin="8dp"
-            app:cardBackgroundColor="#000000">
+            app:cardBackgroundColor="@color/primaryLightColor"
+            app:rippleColor="@color/primaryDarkColor">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:padding="8dp"
@@ -33,32 +34,23 @@
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_avatar"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/octocat"
+                    style="@style/imageView"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_margin="8dp" />
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
                 <TextView
                     android:id="@+id/tv_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/tv_item_rv"
                     android:text="@{favorite.username}"
-                    android:textSize="17sp"
-                    android:textStyle="bold"
-                    android:layout_marginStart="8dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toEndOf="@id/iv_avatar"
                     app:layout_constraintBottom_toTopOf="@id/tv_username" />
 
                 <TextView
                     android:id="@+id/tv_username"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/tv_item_rv"
                     android:text="@{favorite.name}"
-                    android:layout_margin="8dp"
                     app:layout_constraintBottom_toTopOf="@id/tv_totalFollower"
                     app:layout_constraintStart_toEndOf="@id/iv_avatar" />
 

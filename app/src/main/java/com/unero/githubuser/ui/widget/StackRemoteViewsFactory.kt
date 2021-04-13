@@ -24,7 +24,6 @@ internal class StackRemoteViewsFactory(private val mContext: Context): RemoteVie
 
     override fun onDataSetChanged() {
         val list = favDao.getItemWidget()
-
         listFavorite.addAll(list)
     }
 
@@ -36,6 +35,7 @@ internal class StackRemoteViewsFactory(private val mContext: Context): RemoteVie
     override fun getViewAt(position: Int): RemoteViews {
         val rv = RemoteViews(mContext.packageName, R.layout.widget_item)
 
+        // Set image
         val image = Glide.with(mContext)
             .asBitmap()
             .load(listFavorite[position].avatar)
@@ -44,6 +44,7 @@ internal class StackRemoteViewsFactory(private val mContext: Context): RemoteVie
 
         rv.setImageViewBitmap(R.id.iv_widget, image)
 
+        // Toast username
         val extras = bundleOf(
             FavoriteWidget.EXTRA_ITEM to listFavorite[position].username
         )

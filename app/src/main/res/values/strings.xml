@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Github User</string>
+
+    <!-- Home -->
     <string name="search_hint">Enter word</string>
     <string name="instruction">Click Search to Start…</string>
+    <string name="desc_home">Or click Search Icon above.</string>
+    <string name="total_result">Found %d User</string>
+    <string name="title_banner_home">Browse your Favorite User</string>
+    <string name="description_banner_home" translatable="false">Favorite User Illustration</string>
+    <string name="desc_image_home" translatable="false">Search Illustration</string>
+    <string name="browse">Browse</string>
+
+    <!-- Detail -->
     <string name="repo_value">%d Public Repository</string>
     <string name="zero_follower">Doesn\'t have any followers</string>
     <string name="zero_following">Doesn\'t following anyone</string>
@@ -11,20 +21,30 @@
     <string name="tab_text_2">Following</string>
     <string name="dynamic_tab_2">%d Following</string>
     <string name="no_connection">Check your connection first!</string>
-    <string name="done">Load Done 😊</string>
-    <string name="wait_please">Wait a minute</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="cd_img_logo">Application Logo</string>
-    <string name="desc_home">Or click Search Icon above.</string>
-    <string name="title_banner_home">Browse your Favorite User</string>
-    <string name="description_banner_home">Favorite User Illustration</string>
-    <string name="browse">Browse</string>
-    <string name="desc_image_home">Search Illustration</string>
+
+    <!-- Favorite -->
+    <string name="cd_img_logo" translatable="false">Application Logo</string>
     <string name="title_appbar_favorite">Favorite</string>
     <string name="toast_delete">Favorite deleted</string>
     <string name="toast_insert">Added to Favorite</string>
-    <string name="appwidget_text">FAVORITE USER</string>
-    <string name="add_widget">Add widget</string>
-    <string name="empty_text">NO DATA</string>
+    <string name="appwidget_text">Favorite User</string>
+
+    <!-- Widget -->
+    <string name="add_widget" translatable="false">Add widget</string>
+    <string name="empty_text">Data not Available</string>
+
+    <!-- Alarm -->
+    <string name="alarm_title" translatable="false">Github User</string>
+    <string name="alarm_content">Let\'s find a cool User again!</string>
+    <string name="alarm_active">Daily Reminder Activated</string>
+    <string name="alarm_deactive">Daily Reminder Deactivated</string>
+    <string name="item_search_title">Search User</string>
+    <string name="item_setting_title">Setting</string>
+    <string name="empty_favorite">Empty Favorite</string>
+    <string name="no_result">Not found any User</string>
+    <string name="item_delete_all">Delete All</string>
+    <string name="toast_delete_all">Success delete all</string>
+
+    <!-- Share -->
+    <string name="share_paragraph">Hey I found cool user %1$s from Github User App. Check it out %2$s</string>
 </resources>
