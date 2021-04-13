@@ -52,20 +52,30 @@ class MainActivity : AppCompatActivity() {
 
             if (favorites != null) {
                 if (favorites.isNotEmpty()) {
+                    showInfo(false)
                     myAdapter.setData(favorites)
                 } else {
-                    showInfo()
+                    myAdapter.setData(emptyList())
+                    showInfo(true)
                 }
             } else {
-                showInfo()
+                myAdapter.setData(emptyList())
+                showInfo(true)
             }
         }
     }
 
-    private fun showInfo() {
-        binding.apply {
-            ivIllustration.visibility = View.VISIBLE
-            tvNoData.text = getString(R.string.no_data)
+    private fun showInfo(render: Boolean) {
+        if (render) {
+            binding.apply {
+                ivIllustration.visibility = View.VISIBLE
+                tvNoData.text = getString(R.string.no_data)
+            }
+        } else {
+            binding.apply {
+                ivIllustration.visibility = View.GONE
+                tvNoData.visibility = View.GONE
+            }
         }
     }
 

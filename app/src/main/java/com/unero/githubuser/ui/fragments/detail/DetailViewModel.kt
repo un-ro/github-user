@@ -12,11 +12,9 @@ import com.unero.githubuser.data.remote.model.User
 import com.unero.githubuser.data.repository.LocalRepository
 import com.unero.githubuser.data.repository.RemoteRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
-@InternalCoroutinesApi
 class DetailViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: LocalRepository

@@ -10,9 +10,7 @@ import com.unero.githubuser.R
 import com.unero.githubuser.data.local.Favorite
 import com.unero.githubuser.data.local.FavoriteDao
 import com.unero.githubuser.data.local.FavoriteDatabase
-import kotlinx.coroutines.InternalCoroutinesApi
 
-@InternalCoroutinesApi
 internal class StackRemoteViewsFactory(private val mContext: Context): RemoteViewsService.RemoteViewsFactory {
 
     private val listFavorite = mutableListOf<Favorite>()

@@ -21,7 +21,6 @@ import com.unero.githubuser.ui.adapter.SectionsPagerAdapter
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.InternalCoroutinesApi
 
-@InternalCoroutinesApi
 class DetailFragment : Fragment() {
 
     companion object {

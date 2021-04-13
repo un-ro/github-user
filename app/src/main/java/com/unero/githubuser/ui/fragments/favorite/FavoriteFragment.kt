@@ -15,7 +15,6 @@ import com.unero.githubuser.ui.adapter.favorite.FavoriteAdapter
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.InternalCoroutinesApi
 
-@InternalCoroutinesApi
 class FavoriteFragment : Fragment() {
 
     private lateinit var viewModel: FavoriteViewModel

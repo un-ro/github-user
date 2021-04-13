@@ -18,9 +18,7 @@ import com.unero.githubuser.data.remote.model.User
 import com.unero.githubuser.databinding.FragmentHomeBinding
 import com.unero.githubuser.ui.adapter.shared.SharedAdapter
 import de.mateware.snacky.Snacky
-import kotlinx.coroutines.InternalCoroutinesApi
 
-@InternalCoroutinesApi
 class HomeFragment : Fragment() {
 
     private lateinit var viewModel: HomeViewModel

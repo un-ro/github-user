@@ -14,7 +14,6 @@ import com.unero.githubuser.databinding.FragmentFollowerBinding
 import com.unero.githubuser.ui.adapter.shared.SharedAdapter
 import kotlinx.coroutines.InternalCoroutinesApi
 
-@InternalCoroutinesApi
 class FollowerFragment : Fragment() {
 
     private lateinit var viewModel: DetailViewModel

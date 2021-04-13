@@ -8,9 +8,7 @@ import android.database.Cursor
 import android.net.Uri
 import com.unero.githubuser.data.local.FavoriteDatabase
 import com.unero.githubuser.data.repository.LocalRepository
-import kotlinx.coroutines.InternalCoroutinesApi
 
-@InternalCoroutinesApi
 class FavoriteProvider : ContentProvider() {
 
     private lateinit var repository: LocalRepository
