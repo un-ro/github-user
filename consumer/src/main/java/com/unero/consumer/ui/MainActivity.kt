@@ -52,11 +52,12 @@ class MainActivity : AppCompatActivity() {
 
             if (favorites != null) {
                 if (favorites.isNotEmpty()) {
-                    println(favorites.toString())
                     myAdapter.setData(favorites)
                 } else {
                     showInfo()
                 }
+            } else {
+                showInfo()
             }
         }
     }
