@@ -21,6 +21,9 @@
     <string name="tab_text_2">Following</string>
     <string name="dynamic_tab_2">%d Following</string>
     <string name="no_connection">Check your connection first!</string>
+    <string name="item_menu_share">Share</string>
+    <string name="item_menu_link">Github Profile</string>
+    <string name="title_profile">%s Profile\'s</string>
 
     <!-- Favorite -->
     <string name="cd_img_logo" translatable="false">Application Logo</string>
@@ -28,6 +31,7 @@
     <string name="toast_delete">Favorite deleted</string>
     <string name="toast_insert">Added to Favorite</string>
     <string name="appwidget_text">Favorite User</string>
+    <string name="iv_illustration">Illustration</string>
 
     <!-- Widget -->
     <string name="add_widget" translatable="false">Add widget</string>
@@ -47,4 +51,5 @@
 
     <!-- Share -->
     <string name="share_paragraph">Hey I found cool user %1$s from Github User App. Check it out %2$s</string>
+
 </resources>

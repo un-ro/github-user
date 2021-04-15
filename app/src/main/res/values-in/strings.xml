@@ -30,4 +30,8 @@
     <string name="toast_delete_all">Sukses menghapus seluruh favorit</string>
     <string name="share_paragraph">Lihat saya menemukan user keren %1$s dari aplikasi Github User. Link nya %2$s</string>
     <string name="total_result">Menemukan %d User</string>
+    <string name="iv_illustration">Ilustrasi</string>
+    <string name="title_profile">Profil %s</string>
+    <string name="item_menu_link">Profil GIthub</string>
+    <string name="item_menu_share">Bagikan</string>
 </resources>

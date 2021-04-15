@@ -15,10 +15,6 @@ import java.util.*
 
 class AlarmReceiver : BroadcastReceiver() {
 
-    companion object {
-        private const val ID_ALARM = 100
-    }
-
     override fun onReceive(context: Context, intent: Intent) {
         showReminder(context)
     }
@@ -105,5 +101,9 @@ class AlarmReceiver : BroadcastReceiver() {
                 R.string.alarm_deactive,
                 Toast.LENGTH_SHORT
         ).show()
+    }
+
+    companion object {
+        private const val ID_ALARM = 100
     }
 }

@@ -19,17 +19,8 @@ import com.unero.githubuser.data.remote.model.Profile
 import com.unero.githubuser.databinding.FragmentDetailBinding
 import com.unero.githubuser.ui.adapter.SectionsPagerAdapter
 import es.dmoral.toasty.Toasty
-import kotlinx.coroutines.InternalCoroutinesApi
 
 class DetailFragment : Fragment() {
-
-    companion object {
-        @StringRes
-        private val TAB_TITLES = intArrayOf(
-            R.string.tab_text_1,
-            R.string.tab_text_2
-        )
-    }
 
     private lateinit var binding: FragmentDetailBinding
     private lateinit var viewModel: DetailViewModel
@@ -63,19 +54,19 @@ class DetailFragment : Fragment() {
         viewModel.profile.observe(viewLifecycleOwner, {
             if (it.isSuccessful) {
                 profile = it.body()!!
-                profile = editProfile(profile)
+                profile = setProfileIfProfileIsNull(profile)
                 binding.profile = profile
                 drawIcon(profile)
-                binding.topbar.title = "${profile.login} Profile\'s"
+                binding.topbar.title = getString(R.string.title_profile, profile.login)
                 setupFAB()
             }
         })
 
         drawTab()
-        appbar()
+        setAppBar()
     }
 
-    private fun editProfile(profile: Profile): Profile {
+    private fun setProfileIfProfileIsNull(profile: Profile): Profile {
         // Change profile value if there are null values
         profile.apply {
             if (company != null) company = buildString {
@@ -138,7 +129,7 @@ class DetailFragment : Fragment() {
     }
 
     // Material Appbar
-    private fun appbar() {
+    private fun setAppBar() {
         binding.topbar.setNavigationOnClickListener {
             findNavController().navigate(R.id.action_detail_to_homeFragment)
         }
@@ -205,5 +196,13 @@ class DetailFragment : Fragment() {
         viewModel.search(username).observe(viewLifecycleOwner, {
             viewModel.setStatus(it != null)
         })
+    }
+
+    companion object {
+        @StringRes
+        private val TAB_TITLES = intArrayOf(
+            R.string.tab_text_1,
+            R.string.tab_text_2
+        )
     }
 }

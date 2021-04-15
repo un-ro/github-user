@@ -43,6 +43,7 @@ Recommendation:
 1. MVVM
 
 ## Submission 3
+![Third Submission](git_asset/star_submission_3.png)
 Requirements:
 1. Favorite User
 	- Add and delete user from list
