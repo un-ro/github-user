@@ -14,7 +14,7 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             style="@style/Widget.App.Toolbar"
-            app:title="Setting"
+            app:title="@string/item_setting"
             app:titleCentered="true"
             app:navigationIcon="@drawable/ic_back" >
         </com.google.android.material.appbar.MaterialToolbar>

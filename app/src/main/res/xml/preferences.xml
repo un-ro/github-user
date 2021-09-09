@@ -3,23 +3,23 @@
 
     <PreferenceCategory
         android:icon="@drawable/icon_notification"
-        android:title="Notification" >
+        android:title="@string/title_notification" >
 
         <SwitchPreference
             android:key="key_alarm"
-            android:title="Daily Reminder"
-            android:summary="Reminder each 9 AM to open app." />
+            android:title="@string/item_reminder"
+            android:summary="@string/item_detail_reminder" />
 
     </PreferenceCategory>
 
     <PreferenceCategory
         android:icon="@drawable/icon_language"
-        android:title="Languge">
+        android:title="@string/title_language">
 
         <Preference
             android:key="key_language"
             android:selectable="true"
-            android:title="Change Language" />
+            android:title="@string/item_change_lang" />
 
     </PreferenceCategory>
 
