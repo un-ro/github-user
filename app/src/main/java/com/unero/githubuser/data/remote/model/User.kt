@@ -1,7 +1,6 @@
 package com.unero.githubuser.data.remote.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import com.google.gson.annotations.SerializedName
 
 /*
 Data for
@@ -10,9 +9,9 @@ Data for
             https://api.github.com/users/{Username}/following
  */
 
-@Parcelize
 data class User(
-    var login: String,
-    var avatar_url: String,
-    var url: String
-): Parcelable
+    @SerializedName("login")
+    var username: String,
+    @SerializedName("avatar_url")
+    var avatar: String,
+)

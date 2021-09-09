@@ -1,16 +1,21 @@
 package com.unero.githubuser.data.remote.model
 
+import com.google.gson.annotations.SerializedName
+
 // Data for https://api.github.com/users/{username}
 
 data class Profile(
-    val login: String?,
+    @SerializedName("login")
+    val username: String,
     val name: String?,
-    val html_url: String?,
-    val avatar_url: String?,
-    var company: String?,
-    var location: String?,
-    val public_repos: Int?,
-    val bio: String?,
-    val followers: Int?,
+    @SerializedName("html_url")
+    val githubUrl: String,
+    @SerializedName("avatar_url")
+    val avatar: String,
+    val company: String?,
+    val location: String?,
+    @SerializedName("public_repos")
+    val repository: Int,
+    val followers: Int,
     val following: Int?
 )
