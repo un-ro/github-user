@@ -8,17 +8,22 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.unero.githubuser.R
+import com.unero.githubuser.databinding.FragmentSplashBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SplashFragment : Fragment() {
 
+    private var _binding: FragmentSplashBinding? = null
+    private val binding get() = _binding as FragmentSplashBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_splash, container, false)
+    ): View {
+        _binding = FragmentSplashBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -26,7 +31,13 @@ class SplashFragment : Fragment() {
 
         lifecycleScope.launch(Dispatchers.Main) {
             delay(2500)
-            findNavController().navigate(R.id.action_splash_to_homeFragment)
+            val action = SplashFragmentDirections.actionSplashToHomeFragment()
+            findNavController().navigate(action)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
