@@ -2,18 +2,23 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="Settings">
+        android:icon="@drawable/icon_notification"
+        android:title="Notification" >
 
         <SwitchPreference
             android:key="key_alarm"
-            android:icon="@drawable/icon_notification"
             android:title="Daily Reminder"
             android:summary="Reminder each 9 AM to open app." />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:icon="@drawable/icon_language"
+        android:title="Languge">
 
         <Preference
             android:key="key_language"
             android:selectable="true"
-            android:icon="@drawable/icon_language"
             android:title="Change Language" />
 
     </PreferenceCategory>

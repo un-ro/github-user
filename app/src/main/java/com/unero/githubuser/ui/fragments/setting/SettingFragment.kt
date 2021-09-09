@@ -4,6 +4,11 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.Settings
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
+import androidx.navigation.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
@@ -23,6 +28,25 @@ class SettingFragment: PreferenceFragmentCompat(), SharedPreferences.OnSharedPre
         reminder()
         alarmReceiver = AlarmReceiver()
         setSharedPref()
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val defaultView = super.onCreateView(inflater, container, savedInstanceState)
+        val newLayout = inflater.inflate(R.layout.pref_template, container, false) as ViewGroup
+        newLayout.addView(defaultView)
+        return newLayout
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
+        toolbar.setNavigationOnClickListener {
+            view.findNavController().popBackStack()
+        }
     }
 
     private fun setSharedPref() {
