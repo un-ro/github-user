@@ -2,17 +2,19 @@ package com.unero.githubuser.ui.adapter.favorite
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.unero.githubuser.data.local.Favorite
 import com.unero.githubuser.databinding.ItemUserBinding
 
 class FavoriteAdapter: RecyclerView.Adapter<FavoriteViewHolder>() {
-    private val data = mutableListOf<Favorite>()
+    private var data = listOf<Favorite>()
 
     fun setData(newData: List<Favorite>) {
-        this.data.clear()
-        this.data.addAll(newData)
-        notifyDataSetChanged()
+        val diffUtil = FavDiffUtil(data, newData)
+        val diffResults = DiffUtil.calculateDiff(diffUtil)
+        data = newData
+        diffResults.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
@@ -26,4 +28,29 @@ class FavoriteAdapter: RecyclerView.Adapter<FavoriteViewHolder>() {
 
     override fun getItemCount(): Int = data.size
 
+}
+
+class FavDiffUtil(
+    private val oldList: List<Favorite>,
+    private val newList: List<Favorite>
+): DiffUtil.Callback() {
+    override fun getOldListSize(): Int = oldList.size
+
+    override fun getNewListSize(): Int = newList.size
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldList[oldItemPosition].username == newList[newItemPosition].username
+    }
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return when {
+            oldList[oldItemPosition].id != newList[newItemPosition].id -> {
+                false
+            }
+            oldList[oldItemPosition].username != newList[newItemPosition].username -> {
+                false
+            }
+            else -> true
+        }
+    }
 }

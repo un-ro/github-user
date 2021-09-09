@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.unero.githubuser.R
+import com.unero.githubuser.data.local.Favorite
 import com.unero.githubuser.databinding.FragmentFavoriteBinding
 import com.unero.githubuser.ui.adapter.favorite.FavoriteAdapter
 import es.dmoral.toasty.Toasty
@@ -36,20 +37,13 @@ class FavoriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRV()
-
         appbar()
-
         viewModel.listFav.observe(viewLifecycleOwner, {
             if (it.isNotEmpty()) {
-                adapter.apply {
-                    setData(it)
-                    notifyDataSetChanged()
-                }
+                setupRV(it)
             } else {
                 binding.apply {
-                    ivNoData.visibility = View.VISIBLE
-                    tvNoData.visibility = View.VISIBLE
+                    animNoItem.visibility = View.VISIBLE
                 }
             }
         })
@@ -73,10 +67,16 @@ class FavoriteFragment : Fragment() {
         }
     }
 
-    private fun setupRV() {
+    private fun setupRV(list: List<Favorite>) {
         adapter = FavoriteAdapter()
+        adapter.setData(list)
         binding.rv.adapter = adapter
         binding.rv.setHasFixedSize(true)
         binding.rv.layoutManager = LinearLayoutManager(requireContext())
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

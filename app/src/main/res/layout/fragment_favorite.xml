@@ -19,40 +19,31 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topbar"
             app:navigationIcon="@drawable/icon_back"
-            app:title="@string/title_appbar_favorite"
+            app:title="@string/title_favorite"
+            app:titleCentered="true"
             app:menu="@menu/favorite_menu"
             style="@style/Widget.App.Toolbar"/>
 
     </com.google.android.material.appbar.AppBarLayout>
     <!-- End TopBar -->
 
-    <ImageView
-        android:id="@+id/iv_no_data"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/anim_no_item"
         android:visibility="gone"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:src="@drawable/ic_undraw_empty"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:lottie_fileName="noitem.json"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:contentDescription="@string/iv_illustration" />
-
-    <TextView
-        android:id="@+id/tv_no_data"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/empty_favorite"
-        app:layout_constraintTop_toBottomOf="@id/iv_no_data"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        tools:listitem="@layout/item_favorite_main"
         app:layout_constraintTop_toBottomOf="@id/appbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
