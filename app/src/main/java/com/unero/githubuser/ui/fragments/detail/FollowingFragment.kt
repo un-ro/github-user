@@ -5,23 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.unero.githubuser.data.remote.model.User
 import com.unero.githubuser.databinding.FragmentFollowingBinding
 import com.unero.githubuser.ui.adapter.shared.SharedAdapter
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class FollowingFragment : Fragment() {
 
     private var _binding: FragmentFollowingBinding? = null
     private val binding get() = _binding as FragmentFollowingBinding
 
-    private lateinit var viewModel: DetailViewModel
+    private val viewModel by sharedViewModel<DetailViewModel>()
     private lateinit var adapter: SharedAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[DetailViewModel::class.java]
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,14 +32,11 @@ class FollowingFragment : Fragment() {
 
         viewModel.listFollowing.observe(viewLifecycleOwner, {
             showLoading(false)
-            if (it.isSuccessful) {
-                val data = it.body()
-                if (!data.isNullOrEmpty()) {
-                    setupRV(data)
-                    showNoData(false)
-                } else {
-                    showNoData(true)
-                }
+            if (!it.isNullOrEmpty()) {
+                setupRV(it)
+                showNoData(false)
+            } else {
+                showNoData(true)
             }
         })
     }

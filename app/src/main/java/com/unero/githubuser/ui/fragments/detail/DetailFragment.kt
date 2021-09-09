@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -20,19 +19,19 @@ import com.unero.githubuser.ui.adapter.SectionsPagerAdapter
 import com.unero.githubuser.util.Mapper
 import de.mateware.snacky.Snacky
 import es.dmoral.toasty.Toasty
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class DetailFragment : Fragment() {
 
     private var _binding: FragmentDetailBinding? = null
     private val binding get() = _binding as FragmentDetailBinding
 
-    private lateinit var viewModel: DetailViewModel
+    private val viewModel by sharedViewModel<DetailViewModel>()
     private val args: DetailFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProvider(requireActivity())[DetailViewModel::class.java]
         viewModel.findDetail(args.username)
         viewModel.setStatus(false)
 
@@ -61,14 +60,9 @@ class DetailFragment : Fragment() {
         })
 
         viewModel.profile.observe(viewLifecycleOwner, {
-            if (it.isSuccessful) {
-                val data = it.body()
-                if (data != null) {
-                    setAppBar(data)
-                    setupUI(data)
-                    setupFAB(data)
-                }
-            }
+            setAppBar(it)
+            setupUI(it)
+            setupFAB(it)
         })
 
         viewModel.errorMessage.observe(viewLifecycleOwner, {
