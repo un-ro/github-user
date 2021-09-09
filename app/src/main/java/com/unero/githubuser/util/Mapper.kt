@@ -8,7 +8,7 @@ object Mapper {
         return Favorite(
             0,
             profile.username,
-            profile.name!!,
+            if (profile.name.isNullOrEmpty()) profile.username else profile.name,
             profile.avatar,
             profile.followers,
             profile.following!!

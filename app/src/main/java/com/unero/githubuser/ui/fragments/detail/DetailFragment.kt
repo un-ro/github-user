@@ -18,6 +18,7 @@ import com.unero.githubuser.data.remote.model.Profile
 import com.unero.githubuser.databinding.FragmentDetailBinding
 import com.unero.githubuser.ui.adapter.SectionsPagerAdapter
 import com.unero.githubuser.util.Mapper
+import de.mateware.snacky.Snacky
 import es.dmoral.toasty.Toasty
 
 class DetailFragment : Fragment() {
@@ -55,6 +56,10 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setFavorite(args.username) // Set status false / true from username
 
+        viewModel.loading.observe(viewLifecycleOwner, {
+            showLoading(it)
+        })
+
         viewModel.profile.observe(viewLifecycleOwner, {
             if (it.isSuccessful) {
                 val data = it.body()
@@ -65,6 +70,21 @@ class DetailFragment : Fragment() {
                 }
             }
         })
+
+        viewModel.errorMessage.observe(viewLifecycleOwner, {
+            Snacky.builder()
+                .setView(requireView())
+                .setText(it)
+                .error()
+                .show()
+
+            val action = DetailFragmentDirections.actionDetailToHomeFragment()
+            findNavController().navigate(action)
+        })
+    }
+
+    private fun showLoading(state: Boolean) {
+        binding.pb.visibility = if (state) View.VISIBLE else View.GONE
     }
 
     private fun setupUI(data: Profile) {
@@ -78,22 +98,20 @@ class DetailFragment : Fragment() {
             content.tvName.text = if (data.name.isNullOrEmpty()) data.username else data.name
 
             content.chipLocation.text =
-                if (data.location.isNullOrEmpty()) "N/A"
+                if (data.location.isNullOrEmpty()) getString(R.string.null_detail)
                 else data.location
 
             content.chipCompany.text =
-                if (data.company.isNullOrEmpty()) "N/A"
+                if (data.company.isNullOrEmpty()) getString(R.string.null_detail)
                 else data.company
 
-            content.chipRepo.text =
-                if (data.repository >= 1) "Repo Publik ${data.repository}"
-                else "Repo Publik 0"
+            content.chipRepo.text = getString(R.string.repo_value, data.repository)
 
             content.viewPager.adapter = SectionsPagerAdapter(this@DetailFragment)
             TabLayoutMediator(binding.content.tabs, binding.content.viewPager) { tab, pos ->
                 when (pos) {
-                    0 -> { tab.text = "Follower ${data.followers}"}
-                    1 -> { tab.text = "Following ${data.following}"}
+                    0 -> { tab.text = getString(R.string.dynamic_tab_1, data.followers)}
+                    1 -> { tab.text = getString(R.string.dynamic_tab_2, data.following)}
                 }
             }.attach()
         }
@@ -111,7 +129,7 @@ class DetailFragment : Fragment() {
                     setOnClickListener {
                         viewModel.delete(args.username)
                         viewModel.setStatus(false)
-                        showToast("delete")
+                        showToast(getString(R.string.toast_delete))
                     }
                 }
             } else {
@@ -120,7 +138,7 @@ class DetailFragment : Fragment() {
                         setOnClickListener {
                             viewModel.add(favorite)
                             viewModel.setStatus(true)
-                            showToast("insert")
+                            showToast(getString(R.string.toast_insert))
                         }
                     }
             }

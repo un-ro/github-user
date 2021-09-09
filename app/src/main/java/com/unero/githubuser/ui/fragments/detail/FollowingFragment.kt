@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.unero.githubuser.R
 import com.unero.githubuser.data.remote.model.User
 import com.unero.githubuser.databinding.FragmentFollowingBinding
 import com.unero.githubuser.ui.adapter.shared.SharedAdapter
@@ -35,53 +33,37 @@ class FollowingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRV()
-
-        binding.rv.visibility = View.INVISIBLE
-        binding.noFollow.visibility = View.INVISIBLE
+        showLoading(true)
 
         viewModel.listFollowing.observe(viewLifecycleOwner, {
+            showLoading(false)
             if (it.isSuccessful) {
-                val following = it.body()
-                if (following != null) {
-                    render(true, following)
+                val data = it.body()
+                if (!data.isNullOrEmpty()) {
+                    setupRV(data)
+                    showNoData(false)
+                } else {
+                    showNoData(true)
                 }
             }
         })
-
-        viewModel.errorMessage.observe(viewLifecycleOwner, {
-            render(false, null)
-        })
     }
 
-    private fun setupRV() {
+    private fun showNoData(condition: Boolean) {
+        binding.animNoItem.visibility = if (condition) View.VISIBLE else View.GONE
+        binding.rv.visibility = if(condition) View.GONE else View.VISIBLE
+    }
+
+    private fun showLoading(condition: Boolean) {
+        binding.pb.visibility = if (condition) View.VISIBLE else View.GONE
+    }
+
+    private fun setupRV(data: List<User>) {
         adapter = SharedAdapter()
         adapter.setFragment(this::class.java.simpleName)
+        adapter.setData(data)
         binding.rv.adapter = adapter
         binding.rv.setHasFixedSize(true)
-        binding.rv.layoutManager = LinearLayoutManager(requireContext())
-    }
-
-    private fun render(isReady: Boolean, following: List<User>?) {
-        if (isReady){
-            if (following?.size == 0){
-                binding.pb.visibility = View.INVISIBLE
-                binding.rv.visibility = View.INVISIBLE
-                binding.noFollow.text = resources.getString(R.string.zero_follower)
-                binding.noFollow.visibility = View.VISIBLE
-            } else {
-                adapter.setData(following)
-                adapter.notifyDataSetChanged()
-                binding.pb.visibility = View.INVISIBLE
-                binding.noFollow.visibility = View.INVISIBLE
-                binding.rv.visibility = View.VISIBLE
-            }
-        } else {
-            binding.pb.visibility = View.INVISIBLE
-            binding.rv.visibility = View.INVISIBLE
-            binding.noFollow.text = resources.getString(R.string.no_connection)
-            binding.noFollow.visibility = View.VISIBLE
-        }
     }
 
     override fun onDestroyView() {

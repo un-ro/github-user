@@ -38,14 +38,20 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
     private var following: MutableLiveData<Response<List<User>>> = MutableLiveData()
     val listFollowing: LiveData<Response<List<User>>> get() = following
 
+    private var _loading: MutableLiveData<Boolean> = MutableLiveData()
+    val loading: LiveData<Boolean> get() = _loading
+
     fun findDetail(username: String){
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
+            _loading.postValue(true)
             try {
-                _profile.value = RemoteRepository.detailUser(username)
-                following.value = RemoteRepository.followingUser(username)
-                followers.value = RemoteRepository.followerUser(username)
+                _profile.postValue(RemoteRepository.detailUser(username))
+                following.postValue(RemoteRepository.followingUser(username))
+                followers.postValue(RemoteRepository.followerUser(username))
+                _loading.postValue(false)
             } catch (e: Exception) {
-                errorMessage.value = e.toString()
+                _loading.postValue(false)
+                errorMessage.postValue(e.toString())
             }
         }
     }
