@@ -3,8 +3,8 @@ package com.unero.githubuser.ui.adapter.shared
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.unero.githubuser.R
 import com.unero.githubuser.data.remote.model.User
+import com.unero.githubuser.databinding.ItemUserBinding
 
 // Used by Home, Following, Followers
 class SharedAdapter: RecyclerView.Adapter<SharedViewHolder>() {
@@ -22,8 +22,8 @@ class SharedAdapter: RecyclerView.Adapter<SharedViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SharedViewHolder {
-        val mView = LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false)
-        return SharedViewHolder(mView)
+        val binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return SharedViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: SharedViewHolder, position: Int) {
