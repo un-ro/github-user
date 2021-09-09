@@ -71,6 +71,7 @@ class HomeFragment : Fragment() {
         adapter.setData(items)
         adapter.setFragment(this::class.java.simpleName)
         showLoading(false)
+        binding.rv.visibility = View.VISIBLE
         binding.rv.adapter = adapter
         binding.rv.setHasFixedSize(true)
     }
@@ -78,12 +79,24 @@ class HomeFragment : Fragment() {
     private fun search(query: String) {
         viewModel.findUser(query)
         viewModel.listUser.observe(viewLifecycleOwner, {
-            setupRV(it.items)
-            Snacky.builder()
-                .setView(requireView())
-                .setText(getString(R.string.total_result, it.total_count))
-                .success()
-                .show()
+            if (it.items.isNullOrEmpty()) {
+                setupRV(it.items)
+                Snacky.builder()
+                    .setView(requireView())
+                    .setText(getString(R.string.total_result, it.total_count))
+                    .success()
+                    .show()
+            }
+            else {
+                binding.rv.visibility = View.INVISIBLE
+                showIllustration(true)
+                showLoading(false)
+                Snacky.builder()
+                    .setView(requireView())
+                    .setText(getString(R.string.no_result))
+                    .warning()
+                    .show()
+            }
         })
     }
 
@@ -108,13 +121,10 @@ class HomeFragment : Fragment() {
                         return false
                     }
                 })
-                searchView.setOnCloseListener(object : SearchView.OnCloseListener {
-                    override fun onClose(): Boolean {
-                        setupUI()
-                        return true
-                    }
-
-                })
+                searchView.setOnCloseListener {
+                    setupUI()
+                    true
+                }
                 true
             }
             R.id.favorite -> {
@@ -136,8 +146,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun showIllustration(state: Boolean) {
-        binding.ivIllustration.visibility = if (state) View.VISIBLE else View.GONE
-        binding.tvDescHelp.visibility = if (state) View.VISIBLE else View.GONE
+        binding.animSearch.visibility = if (state) View.VISIBLE else View.GONE
     }
 
     override fun onDestroyView() {

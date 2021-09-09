@@ -16,5 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:src="@drawable/foreground"
-        android:contentDescription="@string/cd_img_logo" />
+        android:contentDescription="@string/app_name" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
