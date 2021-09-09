@@ -1,6 +1,6 @@
 # Submission BFAA Dicoding
 
-Min. SDK Lolipop | 5.0
+Min. SDK 29
 
 ## Submission 1
 ![First Submission](git_asset/star_submission_1.png)
