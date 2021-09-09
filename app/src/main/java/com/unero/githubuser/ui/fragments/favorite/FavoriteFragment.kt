@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -13,12 +12,13 @@ import com.unero.githubuser.R
 import com.unero.githubuser.databinding.FragmentFavoriteBinding
 import com.unero.githubuser.ui.adapter.favorite.FavoriteAdapter
 import es.dmoral.toasty.Toasty
-import kotlinx.coroutines.InternalCoroutinesApi
 
 class FavoriteFragment : Fragment() {
 
+    private var _binding: FragmentFavoriteBinding? = null
+    private val binding get() = _binding as FragmentFavoriteBinding
+
     private lateinit var viewModel: FavoriteViewModel
-    private lateinit var binding: FragmentFavoriteBinding
     private lateinit var adapter: FavoriteAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,8 +30,7 @@ class FavoriteFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_favorite, container, false)
-        binding.lifecycleOwner = this
+        _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -58,7 +57,7 @@ class FavoriteFragment : Fragment() {
 
     private fun appbar() {
         binding.topbar.setNavigationOnClickListener {
-            findNavController().navigate(R.id.action_favoriteFragment_to_homeFragment)
+            findNavController().popBackStack()
         }
 
         binding.topbar.setOnMenuItemClickListener { menuItem ->
@@ -66,7 +65,7 @@ class FavoriteFragment : Fragment() {
                 R.id.item_delete_all -> {
                     viewModel.deleteAll()
                     Toasty.success(requireContext(), getString(R.string.toast_delete_all), Toasty.LENGTH_SHORT).show()
-                    findNavController().navigate(R.id.action_favoriteFragment_to_homeFragment)
+                    findNavController().popBackStack()
                     true
                 }
                 else -> false

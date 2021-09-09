@@ -1,24 +1,20 @@
 package com.unero.githubuser.ui.adapter.favorite
 
-import android.view.View
-import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.unero.githubuser.R
 import com.unero.githubuser.data.local.Favorite
-import com.unero.githubuser.databinding.ItemFavoriteMainBinding
+import com.unero.githubuser.databinding.ItemUserBinding
+import com.unero.githubuser.ui.fragments.favorite.FavoriteFragmentDirections
 
-class FavoriteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val binding = ItemFavoriteMainBinding.bind(itemView)
+class FavoriteViewHolder(private val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(favorite: Favorite) {
-        binding.favorite = favorite
-        Glide.with(itemView).load(favorite.avatar).into(binding.ivAvatar)
-
-        binding.cvItem.setOnClickListener {
-            val bundle = bundleOf("username" to favorite.username)
-            it.findNavController().navigate(R.id.action_favoriteFragment_to_detail, bundle)
+        binding.tvUsername.text = favorite.username
+        Glide.with(itemView).load(favorite.avatar).into(binding.imgAvatar)
+        binding.root.setOnClickListener {
+            val action = FavoriteFragmentDirections.actionFavoriteFragmentToDetail(favorite.username)
+            it.findNavController().navigate(action)
         }
     }
 }

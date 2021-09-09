@@ -3,8 +3,8 @@ package com.unero.githubuser.ui.adapter.favorite
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.unero.githubuser.R
 import com.unero.githubuser.data.local.Favorite
+import com.unero.githubuser.databinding.ItemUserBinding
 
 class FavoriteAdapter: RecyclerView.Adapter<FavoriteViewHolder>() {
     private val data = mutableListOf<Favorite>()
@@ -16,8 +16,8 @@ class FavoriteAdapter: RecyclerView.Adapter<FavoriteViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_favorite_main, parent, false)
-        return FavoriteViewHolder(view)
+        val binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return FavoriteViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: FavoriteViewHolder, position: Int) {
