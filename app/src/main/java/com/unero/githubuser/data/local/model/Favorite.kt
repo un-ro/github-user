@@ -1,4 +1,4 @@
-package com.unero.githubuser.data.local
+package com.unero.githubuser.data.local.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

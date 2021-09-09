@@ -1,6 +1,6 @@
 package com.unero.githubuser.util
 
-import com.unero.githubuser.data.local.Favorite
+import com.unero.githubuser.data.local.model.Favorite
 import com.unero.githubuser.data.remote.model.Profile
 
 object Mapper {

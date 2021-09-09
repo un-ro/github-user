@@ -1,4 +1,4 @@
-package com.unero.githubuser.data.local
+package com.unero.githubuser.data.local.room
 
 import android.database.Cursor
 import androidx.lifecycle.LiveData
@@ -6,6 +6,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.unero.githubuser.data.local.model.Favorite
 import kotlinx.coroutines.flow.Flow
 
 @Dao
