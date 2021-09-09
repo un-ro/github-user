@@ -43,7 +43,7 @@ class FollowingFragment : Fragment() {
 
     private fun showNoData(condition: Boolean) {
         binding.animNoItem.visibility = if (condition) View.VISIBLE else View.GONE
-        binding.rv.visibility = if(condition) View.GONE else View.VISIBLE
+        binding.rv.visibility = if (condition) View.GONE else View.VISIBLE
     }
 
     private fun showLoading(condition: Boolean) {

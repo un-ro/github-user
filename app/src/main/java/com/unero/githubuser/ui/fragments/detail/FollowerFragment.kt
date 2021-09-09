@@ -28,10 +28,7 @@ class FollowerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.loading.observe(viewLifecycleOwner, {
-            showLoading(it)
-        })
+        showLoading(true)
 
         viewModel.listFollower.observe(viewLifecycleOwner, {
             showLoading(false)
@@ -46,12 +43,11 @@ class FollowerFragment : Fragment() {
 
     private fun showNoData(condition: Boolean) {
         binding.animNoItem.visibility = if (condition) View.VISIBLE else View.GONE
-        binding.rv.visibility = if(condition) View.GONE else View.VISIBLE
+        binding.rv.visibility = if (condition) View.GONE else View.VISIBLE
     }
 
     private fun showLoading(condition: Boolean) {
         binding.pb.visibility = if (condition) View.VISIBLE else View.GONE
-        binding.rv.visibility = if(condition) View.GONE else View.VISIBLE
     }
 
     private fun setupRV(data: List<User>) {
