@@ -29,39 +29,19 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
 
     // Profile Response
     private var _profile: MutableLiveData<Response<Profile>> = MutableLiveData()
-    val profile: LiveData<Response<Profile>>
-        get() {
-            return _profile
-        }
+    val profile: LiveData<Response<Profile>> get() = _profile
 
     // Follow Response
     private var followers: MutableLiveData<Response<List<User>>> = MutableLiveData()
+    val listFollower: LiveData<Response<List<User>>> get() = followers
+
     private var following: MutableLiveData<Response<List<User>>> = MutableLiveData()
-
-    // Live Data
-    val listFollower: LiveData<Response<List<User>>>
-        get() {
-            return followers
-        }
-
-    val listFollowing: LiveData<Response<List<User>>>
-        get() {
-            return following
-        }
+    val listFollowing: LiveData<Response<List<User>>> get() = following
 
     fun findDetail(username: String){
         viewModelScope.launch {
             try {
                 _profile.value = RemoteRepository.detailUser(username)
-            } catch (e: Exception) {
-                errorMessage.value = e.toString()
-            }
-        }
-    }
-
-    fun listFollow(username: String) {
-        viewModelScope.launch {
-            try {
                 following.value = RemoteRepository.followingUser(username)
                 followers.value = RemoteRepository.followerUser(username)
             } catch (e: Exception) {

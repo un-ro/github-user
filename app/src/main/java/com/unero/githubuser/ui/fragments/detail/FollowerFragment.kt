@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,31 +11,31 @@ import com.unero.githubuser.R
 import com.unero.githubuser.data.remote.model.User
 import com.unero.githubuser.databinding.FragmentFollowerBinding
 import com.unero.githubuser.ui.adapter.shared.SharedAdapter
-import kotlinx.coroutines.InternalCoroutinesApi
 
 class FollowerFragment : Fragment() {
 
+    private var _binding: FragmentFollowerBinding? = null
+    private val binding get() = _binding as FragmentFollowerBinding
+
     private lateinit var viewModel: DetailViewModel
-    private lateinit var binding: FragmentFollowerBinding
     private lateinit var adapter: SharedAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity()).get(DetailViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity())[DetailViewModel::class.java]
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_follower, container, false)
-        binding.lifecycleOwner = this
+        _binding = FragmentFollowerBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupRV()
-
-        binding.pb.visibility = View.VISIBLE
-        binding.rv.visibility = View.INVISIBLE
-        binding.noFollow.visibility = View.INVISIBLE
 
         viewModel.listFollower.observe(viewLifecycleOwner, {
             if (it.isSuccessful) {
@@ -50,8 +49,6 @@ class FollowerFragment : Fragment() {
         viewModel.errorMessage.observe(viewLifecycleOwner, {
             render(false, null)
         })
-
-        return binding.root
     }
 
     private fun setupRV() {
@@ -86,5 +83,10 @@ class FollowerFragment : Fragment() {
                 noFollow.visibility = View.VISIBLE
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

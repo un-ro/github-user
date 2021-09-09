@@ -5,87 +5,103 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.StringRes
+import androidx.activity.OnBackPressedCallback
 import androidx.core.net.toUri
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 import com.unero.githubuser.R
-import com.unero.githubuser.data.local.Favorite
 import com.unero.githubuser.data.remote.model.Profile
 import com.unero.githubuser.databinding.FragmentDetailBinding
 import com.unero.githubuser.ui.adapter.SectionsPagerAdapter
+import com.unero.githubuser.util.Mapper
 import es.dmoral.toasty.Toasty
 
 class DetailFragment : Fragment() {
 
-    private lateinit var binding: FragmentDetailBinding
-    private lateinit var viewModel: DetailViewModel
-    private lateinit var profile: Profile
+    private var _binding: FragmentDetailBinding? = null
+    private val binding get() = _binding as FragmentDetailBinding
 
-    private var username = ""
+    private lateinit var viewModel: DetailViewModel
+    private val args: DetailFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProvider(requireActivity()).get(DetailViewModel::class.java)
-
-        username = arguments?.getString("username").orEmpty()
-        fetch(username)
+        viewModel = ViewModelProvider(requireActivity())[DetailViewModel::class.java]
+        viewModel.findDetail(args.username)
         viewModel.setStatus(false)
+
+        activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val action = DetailFragmentDirections.actionDetailToHomeFragment()
+                findNavController().navigate(action)
+            }
+        })
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
-        binding.lifecycleOwner = this
-        setFavorite(username) // Set status false / true from username
+        _binding = FragmentDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setFavorite(args.username) // Set status false / true from username
 
         viewModel.profile.observe(viewLifecycleOwner, {
             if (it.isSuccessful) {
-                profile = it.body()!!
-                profile = setProfileIfProfileIsNull(profile)
-                binding.profile = profile
-                drawIcon(profile)
-                binding.topbar.title = getString(R.string.title_profile, profile.login)
-                setupFAB()
+                val data = it.body()
+                if (data != null) {
+                    setAppBar(data)
+                    setupUI(data)
+                    setupFAB(data)
+                }
             }
         })
-
-        drawTab()
-        setAppBar()
     }
 
-    private fun setProfileIfProfileIsNull(profile: Profile): Profile {
-        // Change profile value if there are null values
-        profile.apply {
-            if (company != null) company = buildString {
-                append(company!!.take(15))
-                append("...")
-            }
-            if (location == null) location = "Not Included"
-            if (company == null) company = "Not Included"
+    private fun setupUI(data: Profile) {
+        binding.apply {
+            collapsingBar.title = data.username
+
+            Glide.with(root)
+                .load(data.avatar)
+                .into(ivBar)
+
+            content.tvName.text = if (data.name.isNullOrEmpty()) data.username else data.name
+
+            content.chipLocation.text =
+                if (data.location.isNullOrEmpty()) "N/A"
+                else data.location
+
+            content.chipCompany.text =
+                if (data.company.isNullOrEmpty()) "N/A"
+                else data.company
+
+            content.chipRepo.text =
+                if (data.repository >= 1) "Repo Publik ${data.repository}"
+                else "Repo Publik 0"
+
+            content.viewPager.adapter = SectionsPagerAdapter(this@DetailFragment)
+            TabLayoutMediator(binding.content.tabs, binding.content.viewPager) { tab, pos ->
+                when (pos) {
+                    0 -> { tab.text = "Follower ${data.followers}"}
+                    1 -> { tab.text = "Following ${data.following}"}
+                }
+            }.attach()
         }
-
-        return profile
     }
 
-    private fun setupFAB() {
+    private fun setupFAB(data: Profile) {
         // Create object for insert
-        val favorite = profile.login?.let { Favorite(
-                0, it, profile.name.orEmpty(), profile.avatar_url.orEmpty(),
-                profile.followers ?: 0, profile.following ?: 0)
-        }
+         val favorite = Mapper.profileToFavorite(data)
 
         // Observe status value, change drawable and database action
         viewModel.status.observe(viewLifecycleOwner, {
@@ -93,7 +109,7 @@ class DetailFragment : Fragment() {
                 binding.fabFav.apply {
                     setImageResource(R.drawable.ic_fav_filled)
                     setOnClickListener {
-                        viewModel.delete(username)
+                        viewModel.delete(args.username)
                         viewModel.setStatus(false)
                         showToast("delete")
                     }
@@ -102,7 +118,7 @@ class DetailFragment : Fragment() {
                     binding.fabFav.apply {
                         setImageResource(R.drawable.ic_fav)
                         setOnClickListener {
-                            viewModel.add(favorite!!)
+                            viewModel.add(favorite)
                             viewModel.setStatus(true)
                             showToast("insert")
                         }
@@ -112,97 +128,57 @@ class DetailFragment : Fragment() {
     }
 
     private fun showToast(s: String) {
-        when (s) {
-            "insert" -> {
-                Toasty.success(requireContext(), getString(R.string.toast_insert), Toasty.LENGTH_SHORT).show()
-            }
-            "delete" -> {
-                Toasty.success(requireContext(), getString(R.string.toast_delete), Toasty.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    // Get data from api
-    private fun fetch(username: String){
-        viewModel.findDetail(username)
-        viewModel.listFollow(username)
+        Toasty.success(requireContext(), s, Toasty.LENGTH_SHORT).show()
     }
 
     // Material Appbar
-    private fun setAppBar() {
-        binding.topbar.setNavigationOnClickListener {
-            findNavController().navigate(R.id.action_detail_to_homeFragment)
-        }
-
-        binding.topbar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                // Share method, text value to Implicit Intent
-                R.id.btn_share -> {
-                    val paragraph = getString(R.string.share_paragraph, profile.login, profile.html_url)
-                    val intent = Intent().apply {
-                        action = Intent.ACTION_SEND
-                        putExtra(Intent.EXTRA_TEXT, paragraph)
-                        type = "text/plain"
+    private fun setAppBar(profile: Profile) {
+        Glide.with(binding.root)
+            .load(profile.avatar)
+            .into(binding.ivBar)
+        binding.toolbar.apply {
+            title = profile.username
+            setNavigationOnClickListener {
+                val action = DetailFragmentDirections.actionDetailToHomeFragment()
+                findNavController().navigate(action)
+            }
+            setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    // Share method, text value to Implicit Intent
+                    R.id.btn_share -> {
+                        val paragraph = getString(R.string.share_paragraph, profile.username, profile.githubUrl)
+                        val intent = Intent().apply {
+                            action = Intent.ACTION_SEND
+                            putExtra(Intent.EXTRA_TEXT, paragraph)
+                            type = "text/plain"
+                        }
+                        val shareIntent = Intent.createChooser(intent, null)
+                        startActivity(shareIntent)
+                        true
                     }
-                    val shareIntent = Intent.createChooser(intent, null)
-                    startActivity(shareIntent)
-                    true
-                }
-                // Intent go to Browser with link to Account Site
-                R.id.btn_link -> {
-                    val intent = Intent(Intent.ACTION_VIEW).apply {
-                        data = profile.html_url?.toUri()
+                    // Intent go to Browser with link to Account Site
+                    R.id.btn_link -> {
+                        val intent = Intent(Intent.ACTION_VIEW).apply {
+                            data = profile.githubUrl.toUri()
+                        }
+                        startActivity(intent)
+                        true
                     }
-                    startActivity(intent)
-                    true
+                    else -> false
                 }
-                else -> false
             }
         }
     }
 
-    // TabLayout and ViewPager
-    private fun drawTab(){
-        binding.viewPager.adapter = SectionsPagerAdapter(this)
-        TabLayoutMediator(binding.tabs, binding.viewPager) {tab, pos ->
-            tab.text = resources.getString(TAB_TITLES[pos])
-        }.attach()
-    }
-
-    // Changing UI like icon, text from object
-    private fun drawIcon(profile: Profile) {
-        // Download image from url and set text from object value
-        Glide.with(this).load(profile.avatar_url).into(binding.imgAvatar)
-        val repo = resources.getString(R.string.repo_value, profile.public_repos)
-        val tvFollower = resources.getString(R.string.dynamic_tab_1, profile.followers)
-        val tvFollowing = resources.getString(R.string.dynamic_tab_2, profile.following)
-
-        // Binding
-        binding.apply {
-            pb.visibility = View.GONE
-            binding.tvRepo.text = repo
-            binding.tvRepo.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_folder, 0, 0, 0)
-            if (profile.location != null)
-                binding.tvLocation.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_map, 0, 0, 0)
-            if (profile.company != null)
-                binding.tvCompany.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_work, 0, 0, 0)
-            binding.tabs.getTabAt(0)?.text = tvFollower
-            binding.tabs.getTabAt(1)?.text = tvFollowing
-        }
-    }
-
-    // Change status value from viewmodel from search Favorite
+    // Change status value from View Model from search Favorite
     private fun setFavorite(username: String) {
         viewModel.search(username).observe(viewLifecycleOwner, {
             viewModel.setStatus(it != null)
         })
     }
 
-    companion object {
-        @StringRes
-        private val TAB_TITLES = intArrayOf(
-            R.string.tab_text_1,
-            R.string.tab_text_2
-        )
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
