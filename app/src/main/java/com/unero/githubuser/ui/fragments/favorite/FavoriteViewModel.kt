@@ -1,25 +1,16 @@
 package com.unero.githubuser.ui.fragments.favorite
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.unero.githubuser.data.local.Favorite
-import com.unero.githubuser.data.local.FavoriteDatabase
-import com.unero.githubuser.data.repository.LocalRepository
+import com.unero.githubuser.data.Repository
+import com.unero.githubuser.data.local.model.Favorite
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class FavoriteViewModel(application: Application): AndroidViewModel(application) {
+class FavoriteViewModel(private val repository: Repository): ViewModel() {
 
-    val listFav: LiveData<List<Favorite>>
-    private val repository: LocalRepository
-
-    init {
-        val favDao = FavoriteDatabase.getDatabase(application).dao()
-        repository = LocalRepository(favDao)
-        listFav = repository.data
-    }
+    val listFav: LiveData<List<Favorite>> = repository.listFav()
 
     fun deleteAll() {
         viewModelScope.launch(Dispatchers.IO) {

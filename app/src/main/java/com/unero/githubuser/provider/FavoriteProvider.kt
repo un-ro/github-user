@@ -2,16 +2,15 @@ package com.unero.githubuser.provider
 
 import android.content.ContentProvider
 import android.content.ContentValues
-import android.content.Context
 import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
-import com.unero.githubuser.data.local.FavoriteDatabase
-import com.unero.githubuser.data.repository.LocalRepository
+import com.unero.githubuser.data.Repository
+import org.koin.android.ext.android.inject
 
 class FavoriteProvider : ContentProvider() {
 
-    private lateinit var repository: LocalRepository
+    private val repository by inject<Repository>()
 
     companion object {
         private const val AUTHORITY = "com.unero.githubuser"
@@ -25,11 +24,7 @@ class FavoriteProvider : ContentProvider() {
         }
     }
 
-    override fun onCreate(): Boolean {
-        val favDao = FavoriteDatabase.getDatabase(context as Context).dao()
-        repository = LocalRepository(favDao)
-        return true
-    }
+    override fun onCreate(): Boolean = true
 
     override fun query(uri: Uri, projection: Array<String>?, selection: String?,
                        selectionArgs: Array<String>?, sortOrder: String?): Cursor? {

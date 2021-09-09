@@ -5,27 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.unero.githubuser.R
-import com.unero.githubuser.data.local.Favorite
+import com.unero.githubuser.data.local.model.Favorite
 import com.unero.githubuser.databinding.FragmentFavoriteBinding
 import com.unero.githubuser.ui.adapter.favorite.FavoriteAdapter
 import es.dmoral.toasty.Toasty
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoriteFragment : Fragment() {
 
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding as FragmentFavoriteBinding
 
-    private lateinit var viewModel: FavoriteViewModel
+    private val viewModel by viewModel<FavoriteViewModel>()
     private lateinit var adapter: FavoriteAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(FavoriteViewModel::class.java)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,7 +66,6 @@ class FavoriteFragment : Fragment() {
         adapter.setData(list)
         binding.rv.adapter = adapter
         binding.rv.setHasFixedSize(true)
-        binding.rv.layoutManager = LinearLayoutManager(requireContext())
     }
 
     override fun onDestroyView() {

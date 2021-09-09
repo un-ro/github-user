@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.unero.githubuser.data.local.Favorite
+import com.unero.githubuser.data.local.model.Favorite
 import com.unero.githubuser.databinding.ItemUserBinding
 
 class FavoriteAdapter: RecyclerView.Adapter<FavoriteViewHolder>() {

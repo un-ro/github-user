@@ -3,7 +3,7 @@ package com.unero.githubuser.ui.adapter.favorite
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.unero.githubuser.data.local.Favorite
+import com.unero.githubuser.data.local.model.Favorite
 import com.unero.githubuser.databinding.ItemUserBinding
 import com.unero.githubuser.ui.fragments.favorite.FavoriteFragmentDirections
 
