@@ -43,6 +43,18 @@ class HomeFragment : Fragment() {
 
         binding.topbar.setOnMenuItemClickListener { menuItem -> appbar(menuItem) }
 
+        setupUI()
+
+        viewModel.errorMessage.observe(viewLifecycleOwner, {
+            Snacky.builder()
+                .setView(requireView())
+                .setText(it)
+                .error()
+                .show()
+        })
+    }
+
+    private fun setupUI() {
         viewModel.listUser.observe(viewLifecycleOwner, {
             if (it.items.isNullOrEmpty()) {
                 showIllustration(true)
@@ -51,14 +63,6 @@ class HomeFragment : Fragment() {
                 showIllustration(false)
                 setupRV(it.items)
             }
-        })
-
-        viewModel.errorMessage.observe(viewLifecycleOwner, {
-            Snacky.builder()
-                .setView(requireView())
-                .setText(it)
-                .error()
-                .show()
         })
     }
 
@@ -101,9 +105,15 @@ class HomeFragment : Fragment() {
                     override fun onQueryTextChange(newText: String?): Boolean {
                         showLoading(true)
                         showIllustration(false)
-
                         return false
                     }
+                })
+                searchView.setOnCloseListener(object : SearchView.OnCloseListener {
+                    override fun onClose(): Boolean {
+                        setupUI()
+                        return true
+                    }
+
                 })
                 true
             }
