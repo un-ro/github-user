@@ -7,26 +7,24 @@ import android.widget.RemoteViewsService
 import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.unero.githubuser.R
-import com.unero.githubuser.data.local.Favorite
-import com.unero.githubuser.data.local.FavoriteDao
-import com.unero.githubuser.data.local.FavoriteDatabase
+import com.unero.githubuser.data.Repository
+import com.unero.githubuser.data.local.model.Favorite
 
-internal class StackRemoteViewsFactory(private val mContext: Context): RemoteViewsService.RemoteViewsFactory {
+internal class StackRemoteViewsFactory(
+    private val mContext: Context,
+    private val repository: Repository
+): RemoteViewsService.RemoteViewsFactory {
 
     private val listFavorite = mutableListOf<Favorite>()
-    private lateinit var favDao: FavoriteDao
 
-    override fun onCreate() {
-        favDao = FavoriteDatabase.getDatabase(mContext).dao()
-    }
+    override fun onCreate() {}
 
     override fun onDataSetChanged() {
-        val list = favDao.getItemWidget()
+        val list = repository.getItemWidget()
         listFavorite.addAll(list)
     }
 
-    override fun onDestroy() {
-    }
+    override fun onDestroy() {}
 
     override fun getCount(): Int = listFavorite.size
 
