@@ -4,15 +4,13 @@ import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.SearchView
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.unero.githubuser.R
 import com.unero.githubuser.data.remote.model.User
 import com.unero.githubuser.databinding.FragmentHomeBinding
@@ -21,148 +19,119 @@ import de.mateware.snacky.Snacky
 
 class HomeFragment : Fragment() {
 
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding as FragmentHomeBinding
+
     private lateinit var viewModel: HomeViewModel
-    private lateinit var binding: FragmentHomeBinding
     private lateinit var adapter: SharedAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
-        binding.lifecycleOwner = this
-        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                activity?.finishAffinity()
-            }
-        })
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        showLoading(false)
-        setupRV()
-        appbar()
-        errorInfo()
+        binding.topbar.setOnMenuItemClickListener { menuItem -> appbar(menuItem) }
 
-        binding.materialButton.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_favoriteFragment)
-        }
-    }
-
-    private fun setupRV() {
-        adapter = SharedAdapter()
-        adapter.setFragment(this::class.java.simpleName)
-        binding.rv.setHasFixedSize(true)
-        binding.rv.layoutManager = LinearLayoutManager(requireContext())
-        binding.rv.adapter = adapter
-    }
-
-    private fun render(query: String) {
-        viewModel.findUser(query)
         viewModel.listUser.observe(viewLifecycleOwner, {
-            if (it.isSuccessful) {
+            if (it.items.isNullOrEmpty()) {
+                showIllustration(true)
                 showLoading(false)
-                val total = it.body()?.total_count
-                val listUser: List<User>? = it.body()?.items
-                adapter.setData(listUser)
-                adapter.notifyDataSetChanged()
-                if (total == 0) {
-                    zeroResult()
-                } else {
-                    illustration(false)
-                    Snacky.builder()
-                        .setView(requireView())
-                        .setText(getString(R.string.total_result, total))
-                        .success()
-                        .show()
-                }
             } else {
-                Snacky.builder()
-                    .setView(requireView())
-                    .setText(it.errorBody().toString())
-                    .error()
-                    .show()
+                showIllustration(false)
+                setupRV(it.items)
             }
         })
-    }
 
-    private fun errorInfo() {
         viewModel.errorMessage.observe(viewLifecycleOwner, {
             Snacky.builder()
-                    .setView(requireView())
-                    .setText(it)
-                    .error()
-                    .show()
+                .setView(requireView())
+                .setText(it)
+                .error()
+                .show()
         })
     }
 
-    private fun zeroResult(){
-        illustration(true)
-        binding.ivIllustration.setImageResource(R.drawable.ic_undraw_empty)
-        binding.tvDescHelp.text = getString(R.string.no_result)
+    private fun setupRV(items: List<User>) {
+        adapter = SharedAdapter()
+        adapter.setData(items)
+        adapter.setFragment(this::class.java.simpleName)
+        showLoading(false)
+        binding.rv.adapter = adapter
+        binding.rv.setHasFixedSize(true)
     }
 
-    private fun appbar(){
-        binding.topbar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.item_search -> {
+    private fun search(query: String) {
+        viewModel.findUser(query)
+        viewModel.listUser.observe(viewLifecycleOwner, {
+            setupRV(it.items)
+            Snacky.builder()
+                .setView(requireView())
+                .setText(getString(R.string.total_result, it.total_count))
+                .success()
+                .show()
+        })
+    }
 
-                    val searchManager = requireContext().getSystemService(Context.SEARCH_SERVICE) as SearchManager
-                    val searchView: SearchView = it.actionView as SearchView
+    private fun appbar(menuItem: MenuItem): Boolean {
+        return when (menuItem.itemId) {
+            R.id.item_search -> {
 
-                    searchView.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
-                    searchView.queryHint = resources.getString(R.string.search_hint)
-                    searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                        override fun onQueryTextSubmit(query: String): Boolean {
-                            render(query)
-                            return true
-                        }
+                val searchManager = requireContext().getSystemService(Context.SEARCH_SERVICE) as SearchManager
+                val searchView: SearchView = menuItem.actionView as SearchView
 
-                        override fun onQueryTextChange(newText: String?): Boolean {
-                            if (newText.isNullOrBlank())
-                                showLoading(false)
-                            else
-                                showLoading(true)
+                searchView.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
+                searchView.queryHint = resources.getString(R.string.search_hint)
+                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String): Boolean {
+                        search(query)
+                        return true
+                    }
 
-                            return false
-                        }
-                    })
-                    true
-                }
-                R.id.item_setting -> {
-                    findNavController().navigate(R.id.action_homeFragment_to_settingFragment)
-                    true
-                }
-                else -> false
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        showLoading(true)
+                        showIllustration(false)
+
+                        return false
+                    }
+                })
+                true
             }
+            R.id.favorite -> {
+                val action = HomeFragmentDirections.actionHomeFragmentToFavoriteFragment()
+                findNavController().navigate(action)
+                true
+            }
+            R.id.item_setting -> {
+                val action = HomeFragmentDirections.actionHomeFragmentToSettingFragment()
+                findNavController().navigate(action)
+                true
+            }
+            else -> false
         }
     }
 
     private fun showLoading(state: Boolean) {
-        if (state) {
-            binding.pb.visibility = View.VISIBLE
-            illustration(false)
-        } else {
-            binding.pb.visibility = View.GONE
-        }
+        binding.pb.visibility = if (state) View.VISIBLE else View.GONE
     }
 
-    private fun illustration(switch: Boolean){
-        if (switch) {
-            binding.ivIllustration.visibility = View.VISIBLE
-            binding.tvDescHelp.visibility = View.VISIBLE
-        } else {
-            binding.ivIllustration.visibility = View.GONE
-            binding.tvDescHelp.visibility = View.GONE
-        }
+    private fun showIllustration(state: Boolean) {
+        binding.ivIllustration.visibility = if (state) View.VISIBLE else View.GONE
+        binding.tvDescHelp.visibility = if (state) View.VISIBLE else View.GONE
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
