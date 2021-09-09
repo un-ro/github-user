@@ -4,12 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.unero.githubuser.data.Repository
 import com.unero.githubuser.data.remote.model.Result
-import com.unero.githubuser.data.repository.RemoteRepository
+import com.unero.ungithub.data.utils.APIResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class HomeViewModel: ViewModel() {
+class HomeViewModel(private val repository: Repository): ViewModel() {
     // Search Response
     private var _listUser: MutableLiveData<Result> = MutableLiveData()
     val listUser: LiveData<Result> get() = _listUser
@@ -18,12 +19,9 @@ class HomeViewModel: ViewModel() {
 
     fun findUser(username: String){
         viewModelScope.launch(Dispatchers.IO) {
-            val response = RemoteRepository.findUser(username)
-            if (response.isSuccessful) {
-                val result = response.body()
-                _listUser.postValue(result)
-            } else {
-                errorMessage.postValue(response.errorBody().toString())
+            when (val response = repository.findUserByUsername(username)) {
+                is APIResponse.Error -> errorMessage.postValue(response.exception.message)
+                is APIResponse.Success -> _listUser.postValue(response.data)
             }
         }
     }

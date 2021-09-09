@@ -9,26 +9,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.unero.githubuser.R
 import com.unero.githubuser.data.remote.model.User
 import com.unero.githubuser.databinding.FragmentHomeBinding
 import com.unero.githubuser.ui.adapter.shared.SharedAdapter
 import de.mateware.snacky.Snacky
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding as FragmentHomeBinding
 
-    private lateinit var viewModel: HomeViewModel
+    private val viewModel: HomeViewModel by sharedViewModel()
     private lateinit var adapter: SharedAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +38,8 @@ class HomeFragment : Fragment() {
 
         binding.topbar.setOnMenuItemClickListener { menuItem -> appbar(menuItem) }
 
+        showIllustration(true)
+
         setupUI()
 
         viewModel.errorMessage.observe(viewLifecycleOwner, {
@@ -56,13 +53,8 @@ class HomeFragment : Fragment() {
 
     private fun setupUI() {
         viewModel.listUser.observe(viewLifecycleOwner, {
-            if (it.items.isNullOrEmpty()) {
-                showIllustration(true)
-                showLoading(false)
-            } else {
-                showIllustration(false)
-                setupRV(it.items)
-            }
+            showIllustration(false)
+            setupRV(it.items)
         })
     }
 
@@ -80,14 +72,6 @@ class HomeFragment : Fragment() {
         viewModel.findUser(query)
         viewModel.listUser.observe(viewLifecycleOwner, {
             if (it.items.isNullOrEmpty()) {
-                setupRV(it.items)
-                Snacky.builder()
-                    .setView(requireView())
-                    .setText(getString(R.string.total_result, it.total_count))
-                    .success()
-                    .show()
-            }
-            else {
                 binding.rv.visibility = View.INVISIBLE
                 showIllustration(true)
                 showLoading(false)
@@ -95,6 +79,13 @@ class HomeFragment : Fragment() {
                     .setView(requireView())
                     .setText(getString(R.string.no_result))
                     .warning()
+                    .show()
+            } else {
+                setupRV(it.items)
+                Snacky.builder()
+                    .setView(requireView())
+                    .setText(getString(R.string.total_result, it.total_count))
+                    .success()
                     .show()
             }
         })
